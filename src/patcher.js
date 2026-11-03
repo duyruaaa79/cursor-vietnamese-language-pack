@@ -2,41 +2,176 @@
 
 // Localizes UI strings that Cursor hardcodes in its workbench bundles (Cursor Settings,
 // Agents Window, chat) and keeps the language pack in sync with the installed Cursor.
-// Only string literals in display-only positions are replaced, never ids or logic values.
+// Strings that the bundle compares, switches on or uses as lookup keys are never replaced.
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const crypto = require('crypto');
 
-const PATCHER_VERSION = '1';
+const PATCHER_VERSION = '2';
 
 const TARGET_FILES = [
 	'vs/workbench/workbench.desktop.main.js',
 	'vs/workbench/workbench.glass.main.js',
+	'vs/workbench/workbench.anysphere-ui-automations.js',
+	'vs/workbench/workbench.xai-commerce-prepaid.js',
 ];
 
-const UI_KEYS = [
-	'label', 'title', 'description', 'markdownDescription', 'settingsDescription', 'message',
-	'placeholder', 'placeHolder', 'tooltip', 'hoverTooltip', 'tooltipLabel', 'ariaLabel',
-	'"aria-label"', 'accessibleLabel', 'children', 'detail', 'subtitle', 'hintText',
-	'secondaryText', 'emptyMessage', 'buttonText', 'primaryButton', 'cancelButton',
-	'confirmLabel', 'dismissLabel', 'actionLabel', 'trayLabel', 'pillTitle', 'waitText',
-	'failedLabel', 'runningLabel', 'doneLabel', 'changedLabel', 'nowLabel', 'heading',
-	'header', 'caption',
-];
+const UI_KEY_RE = /^(?:label|title|description|markdownDescription|settingsDescription|message|placeholder|placeHolder|tooltip|hoverTooltip|ariaLabel|"aria-label"|children|detail|subtitle|heading|header|caption|loading|completed|done|inProgress|pending|running|failed|success|warning|error|errorMessage|successMessage|warningMessage|infoMessage|displayName|zoomIn|zoomOut|text|[a-z]\w*(?:Label|Title|Text|Message|Description|Tooltip|Placeholder|Heading|Caption|Hint|Subtitle|Button))$/;
+const ID_KEY_RE = /^(?:original|id|key|type|kind|command|when|mode|value|icon|className|role|scheme|language|languageId|event|eventName|name|path|url|href|src|uri|model|modelName|toolName|method|status|state|variant|size|color|theme|group|category|order|source|target|format|encoding|channel|level|code|reason)$/;
+const LOGIC_CALL_RE = /\.(?:has|get|set|delete|add|includes|startsWith|endsWith|indexOf|lastIndexOf|getItem|setItem|removeItem|replace|replaceAll|split|match|test|localeCompare|querySelector|querySelectorAll|getElementById|closest|matches|contains)\(\s*$/;
+const NON_UI_CALL_RE = /(?:console\.\w+|\blog\w*|\.\w*Log\w*|\btrack\w*|\bcapture\w*|\bnew \w*Error|\bthrow \w*Error|\brequire|\bimport|\.(?:info|warn|debug|trace))\(\s*$|\bthrow\s*$/;
+const PROMPTISH_RE = /\b(you are|the user|assistant|system prompt|must not|tool call|<\/?\w+>)\b/i;
+const KEYWORDS_BEFORE_REGEX = new Set(['return', 'typeof', 'case', 'do', 'else', 'in', 'of', 'void', 'delete', 'throw', 'new', 'yield', 'await', 'instanceof']);
 
-// Flat lookup objects identified by one entry they contain; every value in them is a label.
-const ANCHOR_ENTRIES = ['"plan-usage":"Plan & Usage"'];
+// Tokenizes minified JS just enough to find string and template literals.
+// Returns { strings: [{start, end, raw}], templates: [{start, end, quasis, exprs}] }
+// where quasis/exprs are [start, end) offsets of the raw template parts.
+function scan(src) {
+	const strings = [];
+	const templates = [];
+	const n = src.length;
+	let prev = '';
+	let prevWord = '';
 
-const STR = '"((?:[^"\\\\\\n]|\\\\.)*)"';
-const KEY_RE = new RegExp(`([{,]\\s*)(${UI_KEYS.join('|')})(\\s*:\\s*)${STR}`, 'g');
-const ACTION_TITLE_RE = new RegExp(`(title\\s*:\\s*\\{\\s*value\\s*:\\s*)${STR}`, 'g');
-const CHILDREN_ARRAY_RE = /children\s*:\s*\[/g;
-const PAIR_RE = new RegExp(`((?:[\\w$]+|${STR})\\s*:\\s*)${STR}`, 'g');
-const PROMPTISH_RE = /\b(you are|the user|assistant|system prompt|must not|tool call)\b/i;
+	function skipString(i, q) {
+		for (i++; i < n; i++) {
+			const c = src.charCodeAt(i);
+			if (c === 92) {
+				i++;
+			} else if (c === q || c === 10) {
+				return i;
+			}
+		}
+		return n;
+	}
+
+	function skipRegex(i) {
+		let inClass = false;
+		for (i++; i < n; i++) {
+			const c = src[i];
+			if (c === '\\') {
+				i++;
+			} else if (c === '[') {
+				inClass = true;
+			} else if (c === ']') {
+				inClass = false;
+			} else if (c === '/' && !inClass) {
+				break;
+			} else if (c === '\n') {
+				return i;
+			}
+		}
+		for (i++; i < n && /[a-z]/.test(src[i]); i++) { }
+		return i - 1;
+	}
+
+	// Scans code starting at i until an unmatched `}` (when inTemplate) or end of input.
+	function code(i, inTemplate) {
+		let depth = 0;
+		for (; i < n; i++) {
+			const ch = src[i];
+			const cc = src.charCodeAt(i);
+			if (cc === 34 || cc === 39) {
+				const end = skipString(i, cc);
+				if (cc === 34) {
+					strings.push({ start: i, end: end + 1, raw: src.slice(i + 1, end) });
+				}
+				i = end;
+				prev = '"';
+				continue;
+			}
+			if (cc === 96) {
+				i = template(i);
+				prev = '"';
+				continue;
+			}
+			if (ch === '/') {
+				const next = src[i + 1];
+				if (next === '/') {
+					i = src.indexOf('\n', i);
+					if (i === -1) {
+						return n;
+					}
+					continue;
+				}
+				if (next === '*') {
+					const end = src.indexOf('*/', i + 2);
+					i = end === -1 ? n : end + 1;
+					continue;
+				}
+				if (prev === '' || '(,=:[!&|?{};+-*%<>~^'.includes(prev) || (prev === 'a' && KEYWORDS_BEFORE_REGEX.has(prevWord))) {
+					i = skipRegex(i);
+					prev = '"';
+					continue;
+				}
+				prev = '/';
+				continue;
+			}
+			if ((cc >= 65 && cc <= 90) || (cc >= 97 && cc <= 122) || cc === 95 || cc === 36 || (cc >= 48 && cc <= 57)) {
+				let j = i + 1;
+				while (j < n) {
+					const d = src.charCodeAt(j);
+					if ((d >= 65 && d <= 90) || (d >= 97 && d <= 122) || d === 95 || d === 36 || (d >= 48 && d <= 57)) {
+						j++;
+					} else {
+						break;
+					}
+				}
+				prevWord = src.slice(i, j);
+				prev = 'a';
+				i = j - 1;
+				continue;
+			}
+			if (ch === '{') {
+				depth++;
+			} else if (ch === '}') {
+				if (depth === 0 && inTemplate) {
+					return i;
+				}
+				depth--;
+			}
+			if (cc > 32) {
+				prev = ch === ')' || ch === ']' ? 'a' : ch;
+				prevWord = '';
+			}
+		}
+		return n;
+	}
+
+	function template(i) {
+		const start = i;
+		const quasis = [];
+		const exprs = [];
+		let qs = i + 1;
+		for (i++; i < n; i++) {
+			const ch = src[i];
+			if (ch === '\\') {
+				i++;
+			} else if (ch === '`') {
+				quasis.push([qs, i]);
+				templates.push({ start, end: i + 1, quasis, exprs });
+				return i;
+			} else if (ch === '$' && src[i + 1] === '{') {
+				quasis.push([qs, i]);
+				const es = i + 2;
+				i = code(es, true);
+				exprs.push([es, i]);
+				qs = i + 1;
+			}
+		}
+		return n;
+	}
+
+	code(0, false);
+	return { strings, templates };
+}
 
 function decode(raw) {
+	if (raw.includes('\n')) {
+		return undefined;
+	}
 	try {
 		return JSON.parse(`"${raw}"`);
 	} catch {
@@ -44,126 +179,266 @@ function decode(raw) {
 	}
 }
 
+function escapeNonAscii(text) {
+	return text.replace(/[\u007f-\uffff]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+}
+
 function encode(value) {
-	return JSON.stringify(value).replace(/[\u007f-\uffff]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+	return escapeNonAscii(JSON.stringify(value));
 }
 
-function isDisplayText(value, key) {
-	if (!value || value.length > 400 || !/[A-Za-z]{2}/.test(value)) {
-		return false;
-	}
-	if (/^[\w.\-/:#@$]+$/.test(value) && !/^[A-Z][a-z]/.test(value)) {
-		return false;
-	}
-	if (/^(https?:|vs\/|\$\(|codicon)/.test(value)) {
-		return false;
-	}
-	if ((key === 'description' || key === 'message') && PROMPTISH_RE.test(value)) {
-		return false;
-	}
-	return true;
+function encodeQuasi(value) {
+	return escapeNonAscii(value.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${'));
 }
 
-// Returns [start, end) of each top-level string element inside a `children:[...]` array.
-function childrenStrings(src, openIdx) {
-	const out = [];
+function prevNonSpace(src, i) {
+	for (i--; i >= 0 && /\s/.test(src[i]); i--) { }
+	return i;
+}
+
+function nextNonSpace(src, i) {
+	for (; i < src.length && /\s/.test(src[i]); i++) { }
+	return i;
+}
+
+// Key name when the literal is the value of `key:` in an object literal.
+function keyBefore(src, start) {
+	const c = prevNonSpace(src, start);
+	if (src[c] !== ':') {
+		return undefined;
+	}
+	const m = /([{,]\s*)([\w$]+|"[\w-]+")\s*$/.exec(src.slice(Math.max(0, c - 60), c));
+	return m ? m[2] : undefined;
+}
+
+// True when position p sits directly inside a `children:[...]` or `return[...]` array.
+function inChildrenArray(src, p) {
 	let depth = 0;
-	let prevSignificant = '[';
-	for (let i = openIdx + 1, limit = Math.min(src.length, openIdx + 8000); i < limit; i++) {
+	for (let i = p, limit = Math.max(0, p - 3000); i >= limit; i--) {
 		const ch = src[i];
-		if (ch === '"' || ch === '\'' || ch === '`') {
-			const start = i;
-			for (i++; i < limit && src[i] !== ch; i++) {
-				if (src[i] === '\\') {
-					i++;
-				}
-			}
-			if (ch === '"' && depth === 0 && (prevSignificant === '[' || prevSignificant === ',')) {
-				let j = i + 1;
-				while (/\s/.test(src[j])) {
-					j++;
-				}
-				if (src[j] === ',' || src[j] === ']') {
-					out.push([start, i + 1]);
-				}
-			}
-			prevSignificant = ch;
-			continue;
-		}
-		if ('([{'.includes(ch)) {
+		if (ch === ')' || ch === ']' || ch === '}') {
 			depth++;
-		} else if (')]}'.includes(ch)) {
+		} else if (ch === '(' || ch === '{') {
 			if (depth === 0) {
-				break;
+				return false;
+			}
+			depth--;
+		} else if (ch === '[') {
+			if (depth === 0) {
+				return /(?:children\s*:|\breturn)\s*$/.test(src.slice(Math.max(0, i - 20), i));
 			}
 			depth--;
 		}
-		if (!/\s/.test(ch)) {
-			prevSignificant = ch;
-		}
 	}
-	return out;
+	return false;
 }
+
+// Flat lookup objects identified by one entry they contain; every value in them is a label.
+const ANCHOR_ENTRIES = ['"plan-usage":"Plan & Usage"'];
 
 function anchorSpans(src) {
 	const spans = [];
 	for (const anchor of ANCHOR_ENTRIES) {
-		let idx = src.indexOf(anchor);
-		while (idx !== -1) {
+		for (let idx = src.indexOf(anchor); idx !== -1; idx = src.indexOf(anchor, idx + anchor.length)) {
 			const start = src.lastIndexOf('{', idx);
 			const end = src.indexOf('}', idx);
 			if (start !== -1 && end !== -1) {
 				spans.push([start, end + 1]);
 			}
-			idx = src.indexOf(anchor, idx + anchor.length);
 		}
 	}
 	return spans;
 }
 
-// Collects every replaceable literal as {start, end, value} (start/end cover the quotes).
-function findLiterals(src) {
-	const found = new Map();
-	const add = (start, end, raw, key) => {
-		const value = decode(raw);
-		if (value !== undefined && isDisplayText(value, key)) {
-			found.set(start, { start, end, value });
-		}
-	};
-	for (const m of src.matchAll(KEY_RE)) {
-		const start = m.index + m[1].length + m[2].length + m[3].length;
-		add(start, start + m[4].length + 2, m[4], m[2]);
-	}
-	for (const m of src.matchAll(ACTION_TITLE_RE)) {
-		const start = m.index + m[1].length;
-		add(start, start + m[2].length + 2, m[2], 'title');
-	}
-	for (const m of src.matchAll(CHILDREN_ARRAY_RE)) {
-		for (const [s, e] of childrenStrings(src, m.index + m[0].length - 1)) {
-			add(s, e, src.slice(s + 1, e - 1), 'children');
-		}
-	}
-	for (const [s, e] of anchorSpans(src)) {
-		const body = src.slice(s, e);
-		for (const m of body.matchAll(PAIR_RE)) {
-			const start = s + m.index + m[1].length;
-			add(start, start + m[3].length + 2, m[3], 'label');
-		}
-	}
-	return [...found.values()].sort((a, b) => a.start - b.start);
+function inSpans(spans, pos) {
+	return spans.some(([a, b]) => pos > a && pos < b);
 }
 
-function patchSource(src, dict) {
+// Describes how the literal at [start, end) is used.
+function classify(src, start, end) {
+	const before = src.slice(Math.max(0, start - 40), start);
+	const p = prevNonSpace(src, start);
+	const q = nextNonSpace(src, end);
+	const after = src.slice(q, q + 40);
+	// Comparisons against a label the bundle itself assigned stay consistent when both sides are translated.
+	if (/\.(?:label|title)\s*[=!]==\s*$/.test(before) || /^[=!]==\s*[\w$]+(?:\.[\w$]+)*\.(?:label|title)\b(?!\s*\()/.test(after)) {
+		return 'labelcmp';
+	}
+	if (/[=!]==?\s*$/.test(before) || /^[=!]==?[^=]/.test(after) || /\bcase\s*$/.test(before) || /^in\b/.test(after) || LOGIC_CALL_RE.test(before)) {
+		return 'logic';
+	}
+	if (src[p] === '[' && /[\w$)\]]/.test(src[prevNonSpace(src, p)]) && !/\b(?:return|case|in|of|typeof|void|yield|await|throw|else|do)\s*$/.test(src.slice(Math.max(0, p - 12), p))) {
+		return 'logic';
+	}
+	if (after[0] === ':' && (src[p] === '{' || src[p] === ',')) {
+		return 'logic';
+	}
+	if (NON_UI_CALL_RE.test(before) || /[\w$]\(\s*\d+\s*,\s*$/.test(before)) {
+		return 'skip';
+	}
+	const key = keyBefore(src, start);
+	if (key !== undefined) {
+		if (/^title$/.test(key) && /\{\s*value\s*:\s*$/.test(before)) {
+			return 'ui';
+		}
+		if (ID_KEY_RE.test(key)) {
+			return 'skip';
+		}
+		return UI_KEY_RE.test(key) ? 'ui' : 'other';
+	}
+	if (/(?:\?|\?\?|\|\||=>|\breturn)\s*$/.test(before)) {
+		return 'ui';
+	}
+	if (src[p] === ':' && /\?\s*"(?:[^"\\\n]|\\.)*"\s*$/.test(src.slice(Math.max(0, p - 320), p))) {
+		return 'ui';
+	}
+	if ((src[p] === '[' || src[p] === ',') && inChildrenArray(src, p)) {
+		return 'ui';
+	}
+	if (/\.(?:textContent|innerText|title|placeholder|ariaLabel|label)\s*=\s*$/.test(before) || /(?:createTextNode|showInformationMessage|showWarningMessage|showErrorMessage)\(\s*$/.test(before)) {
+		return 'ui';
+	}
+	if (/\(\s*"[a-z][\w-]*(?:\.[\w-]+)+"\s*,\s*$/.test(before)) {
+		return 'ui';
+	}
+	if (/(?:^|[,;{}(])\s*(?:(?:const|let|var)\s+)?[\w$]+\s*=\s*$/.test(before)) {
+		return 'ui';
+	}
+	return 'other';
+}
+
+function looksLikeUiText(value, strict) {
+	if (!value || value.length > 300 || !/[A-Za-z]{2}/.test(value) || PROMPTISH_RE.test(value)) {
+		return false;
+	}
+	if (/^(https?:|vs\/|\$\(|codicon|\.|#|--)/.test(value) || /[{}<>;=\\|]|=>|\n/.test(value.replace(/\{\d+\}/g, ''))) {
+		return false;
+	}
+	if (/^[\w.\-/:#@$]+$/.test(value)) {
+		return strict && /^[A-Z][a-z]+$/.test(value);
+	}
+	return /^(?:\{\d+\}\s*)?[A-Z0-9]/.test(value) && /\s/.test(value);
+}
+
+function templateKey(src, t) {
+	let key = '';
+	for (let k = 0; k < t.quasis.length; k++) {
+		const [a, b] = t.quasis[k];
+		const raw = src.slice(a, b);
+		if (raw.includes('\\') || /[{}]/.test(raw)) {
+			return undefined;
+		}
+		key += raw;
+		if (k < t.exprs.length) {
+			key += `{${k}}`;
+		}
+	}
+	return t.exprs.length ? key : undefined;
+}
+
+// Display strings worth translating: string literals in UI positions and templates.
+function findCandidates(src) {
+	const { strings, templates } = scan(src);
+	const anchors = anchorSpans(src);
+	const out = new Set();
+	for (const s of strings) {
+		const value = decode(s.raw);
+		if (value === undefined) {
+			continue;
+		}
+		const kind = inSpans(anchors, s.start) ? 'ui' : classify(src, s.start, s.end);
+		if (kind === 'ui' && looksLikeUiText(value, true)) {
+			out.add(value);
+		}
+	}
+	for (const t of templates) {
+		const key = templateKey(src, t);
+		if (key && classify(src, t.start, t.end) !== 'skip' && looksLikeUiText(key, false)) {
+			out.add(key);
+		}
+	}
+	return out;
+}
+
+function patchSource(src, dict, logic) {
+	const { strings, templates } = scan(src);
+	if (!logic) {
+		logic = new Set();
+		const compared = new Set();
+		const unpatched = new Set();
+		for (const s of strings) {
+			const value = decode(s.raw);
+			if (value === undefined) {
+				continue;
+			}
+			const kind = classify(src, s.start, s.end);
+			if (kind === 'logic') {
+				logic.add(value);
+			} else if (kind === 'labelcmp') {
+				compared.add(value);
+			} else if ((kind === 'skip' && keyBefore(src, s.start) !== 'original') || (kind === 'other' && !/\s/.test(value))) {
+				unpatched.add(value);
+			}
+		}
+		for (const value of compared) {
+			if (unpatched.has(value)) {
+				logic.add(value);
+			}
+		}
+	}
+	const anchors = anchorSpans(src);
+	const edits = [];
+	for (const s of strings) {
+		const value = decode(s.raw);
+		const vi = value === undefined ? undefined : dict[value];
+		if (typeof vi !== 'string' || vi === value) {
+			continue;
+		}
+		if (inSpans(anchors, s.start) && src[nextNonSpace(src, s.end)] !== ':') {
+			edits.push({ start: s.start, end: s.end, text: encode(vi) });
+			continue;
+		}
+		if (logic.has(value)) {
+			continue;
+		}
+		const kind = classify(src, s.start, s.end);
+		if (kind === 'ui' || kind === 'labelcmp' || (kind === 'other' && /\s/.test(value))) {
+			edits.push({ start: s.start, end: s.end, text: encode(vi) });
+		}
+	}
+	for (const t of templates) {
+		const key = templateKey(src, t);
+		const vi = key && dict[key];
+		if (typeof vi !== 'string' || vi === key || classify(src, t.start, t.end) === 'skip') {
+			continue;
+		}
+		const exprs = t.exprs.map(([a, b]) => patchSource(src.slice(a, b), dict, logic).text);
+		const pieces = vi.split(/\{(\d+)\}/);
+		let text = '`';
+		let ok = true;
+		for (let k = 0; k < pieces.length; k++) {
+			if (k % 2 === 0) {
+				text += encodeQuasi(pieces[k]);
+			} else if (exprs[+pieces[k]] !== undefined) {
+				text += '${' + exprs[+pieces[k]] + '}';
+			} else {
+				ok = false;
+			}
+		}
+		if (ok) {
+			edits.push({ start: t.start, end: t.end, text: text + '`' });
+		}
+	}
+	edits.sort((a, b) => a.start - b.start || b.end - a.end);
 	const parts = [];
 	let last = 0;
 	let count = 0;
-	for (const lit of findLiterals(src)) {
-		const vi = dict[lit.value];
-		if (typeof vi !== 'string' || vi === lit.value || lit.start < last) {
+	for (const e of edits) {
+		if (e.start < last) {
 			continue;
 		}
-		parts.push(src.slice(last, lit.start), encode(vi));
-		last = lit.end;
+		parts.push(src.slice(last, e.start), e.text);
+		last = e.end;
 		count++;
 	}
 	parts.push(src.slice(last));
@@ -305,11 +580,11 @@ function extract({ appRoot = defaultAppRoot() } = {}) {
 		if (!fs.existsSync(file)) {
 			continue;
 		}
-		for (const lit of findLiterals(fs.readFileSync(file, 'utf8'))) {
-			seen.add(lit.value);
+		for (const value of findCandidates(fs.readFileSync(file, 'utf8'))) {
+			seen.add(value);
 		}
 	}
 	return [...seen];
 }
 
-module.exports = { apply, restore, status, extract, patchSource, findLiterals, defaultAppRoot, stateDir, TARGET_FILES };
+module.exports = { apply, restore, status, extract, patchSource, findCandidates, scan, classify, defaultAppRoot, stateDir, TARGET_FILES };

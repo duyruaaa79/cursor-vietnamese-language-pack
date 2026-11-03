@@ -45,9 +45,9 @@
       "iconSelect.noResults": "Không có kết quả"
     },
     "vs/base/browser/ui/inputbox/inputBox": {
-      "alertErrorMessage": "Error: {0}",
-      "alertWarningMessage": "Warning: {0}",
-      "alertInfoMessage": "Info: {0}",
+      "alertErrorMessage": "Lỗi: {0}",
+      "alertWarningMessage": "Cảnh báo: {0}",
+      "alertInfoMessage": "Thông tin: {0}",
       "history.inputbox.hint.suffix.noparens": " hoặc {0} để xem lịch sử",
       "history.inputbox.hint.suffix.inparens": " ({0} để xem lịch sử)",
       "clearedInput": "Đã xóa nội dung nhập"
@@ -73,7 +73,7 @@
       "close": "Đóng",
       "not found": "Không tìm thấy kết quả.",
       "replFindNoResults": "Không có kết quả",
-      "foundResults": "{0} results",
+      "foundResults": "{0} kết quả",
       "type to filter": "Nhập để lọc",
       "filter": "Lọc",
       "fuzzySearch": "Khớp gần đúng"
@@ -2062,7 +2062,7 @@
       "title": "Đặt lại tất cả menu"
     },
     "vs/platform/actions/common/menuService": {
-      "hide.label": "Hide '{0}'",
+      "hide.label": "Ẩn '{0}'",
       "configure keybinding": "Cấu hình phím tắt"
     },
     "vs/platform/actionWidget/browser/actionList": {
@@ -2533,13 +2533,13 @@
       "mTerminal": "&&Terminal",
       "mWindow": "Cửa sổ",
       "mHelp": "&&Trợ giúp",
-      "mAbout": "About {0}",
+      "mAbout": "Giới thiệu {0}",
       "miPreferences": "&&Tùy chọn",
       "mServices": "Dịch vụ",
-      "mHide": "Hide {0}",
+      "mHide": "Ẩn {0}",
       "mHideOthers": "Ẩn các mục khác",
       "mShowAll": "Hiện tất cả",
-      "miQuit": "Quit {0}",
+      "miQuit": "Thoát {0}",
       "quit": "&&Thoát",
       "cancel": "Hủy",
       "quitMessage": "Bạn có chắc muốn thoát không?",
@@ -2587,7 +2587,7 @@
       "commonlyUsed": "Dùng thường xuyên",
       "morecCommands": "Lệnh khác",
       "commandPickAriaLabelWithKeybinding": "{0}, {1}",
-      "canNotRun": "Command '{0}' resulted in an error"
+      "canNotRun": "Lệnh '{0}' gây ra lỗi"
     },
     "vs/platform/quickinput/browser/helpQuickAccess": {
       "helpPickAriaLabel": "{0}, {1}"
@@ -2602,7 +2602,7 @@
       "quickInput.steps": "{0}/{1}",
       "quickInputBox.ariaLabel": "Gõ để lọc kết quả.",
       "ok": "OK",
-      "inputModeEntryDescription": "{0} (Press 'Enter' to confirm or 'Escape' to cancel)"
+      "inputModeEntryDescription": "{0} (Nhấn 'Enter' để xác nhận hoặc 'Escape' để hủy)"
     },
     "vs/platform/quickinput/browser/quickInputActions": {
       "quickPick": "Được dùng trong ngữ cảnh của quick pick. Nếu bạn thay đổi một phím tắt cho lệnh này, bạn cũng nên thay đổi tất cả các phím tắt khác (các biến thể phím bổ trợ) của lệnh này.",
@@ -2611,11 +2611,11 @@
     },
     "vs/platform/quickinput/browser/quickInputController": {
       "quickInput.checkAll": "Bật/tắt mọi hộp chọn",
-      "quickInput.visibleCount": "{0} Results",
-      "quickInput.countSelected": "{0} Selected",
+      "quickInput.visibleCount": "{0} kết quả",
+      "quickInput.countSelected": "Đã chọn {0}",
       "ok": "OK",
       "custom": "Tùy chỉnh",
-      "quickInput.backWithKeybinding": "Back ({0})",
+      "quickInput.backWithKeybinding": "Quay lại ({0})",
       "quickInput.back": "Quay lại"
     },
     "vs/platform/quickinput/browser/quickInputTree": {
@@ -3849,8 +3849,8 @@
       "titleKeybinding": "{0} ({1})",
       "additionalViews": "Khung xem bổ sung",
       "numberBadge": "{0} ({1})",
-      "hide": "Hide '{0}'",
-      "keep": "Keep '{0}'",
+      "hide": "Ẩn '{0}'",
+      "keep": "Giữ '{0}'",
       "hideBadge": "Ẩn huy hiệu",
       "showBadge": "Hiện huy hiệu",
       "toggle": "Bật/tắt ghim khung xem",
@@ -3863,7 +3863,7 @@
     },
     "vs/workbench/browser/parts/dialogs/aboutDialog.react": {
       "aboutDialog.copySucceeded": "Đã sao chép",
-      "aboutDialog.versionLabel": "Version {0}",
+      "aboutDialog.versionLabel": "Phiên bản {0}",
       "aboutDialog.copyVersion": "Sao chép phiên bản",
       "aboutDialog.copyBuildDate": "Sao chép ngày dựng",
       "aboutDialog.copyVersionInfo": "Sao chép thông tin phiên bản"
@@ -4291,7 +4291,7 @@
       "noViewResults": "Không có trình soạn thảo khớp",
       "entryAriaLabelWithGroupDirty": "{0}, thay đổi chưa lưu, {1}",
       "entryAriaLabelWithGroup": "{0}, {1}",
-      "entryAriaLabelDirty": "{0}, unsaved changes",
+      "entryAriaLabelDirty": "{0}, có thay đổi chưa lưu",
       "closeEditor": "Đóng trình soạn thảo"
     },
     "vs/workbench/browser/parts/editor/editorStatus": {
@@ -4416,9 +4416,9 @@
       "copyNotification": "Sao chép văn bản"
     },
     "vs/workbench/browser/parts/notifications/notificationsAlerts": {
-      "alertErrorMessage": "Error: {0}",
-      "alertWarningMessage": "Warning: {0}",
-      "alertInfoMessage": "Info: {0}"
+      "alertErrorMessage": "Lỗi: {0}",
+      "alertWarningMessage": "Cảnh báo: {0}",
+      "alertInfoMessage": "Thông tin: {0}"
     },
     "vs/workbench/browser/parts/notifications/notificationsCenter": {
       "notificationsEmpty": "Không có thông báo mới",
@@ -4457,7 +4457,7 @@
       "zeroNotifications": "Không có thông báo",
       "noNotifications": "Không có thông báo mới",
       "oneNotification": "1 thông báo mới",
-      "notifications": "{0} New Notifications",
+      "notifications": "{0} thông báo mới",
       "noNotificationsWithProgress": "Không có thông báo mới ({0} đang xử lý)",
       "oneNotificationWithProgress": "1 thông báo mới ({0} đang xử lý)",
       "notificationsWithProgress": "{0} thông báo mới ({1} đang xử lý)",
@@ -4538,8 +4538,8 @@
     },
     "vs/workbench/browser/parts/sidebar/sidebarMenu": {
       "configureKeybinding": "Cấu hình phím tắt",
-      "hide": "Hide '{0}'",
-      "keep": "Keep '{0}'",
+      "hide": "Ẩn '{0}'",
+      "keep": "Giữ '{0}'",
       "movePrimarySideBarRight": "Chuyển thanh bên chính sang phải",
       "movePrimarySideBarLeft": "Chuyển thanh bên chính sang trái"
     },
@@ -4547,7 +4547,7 @@
       "toggleActivityBar": "Bật/tắt thanh hoạt động"
     },
     "vs/workbench/browser/parts/statusbar/statusbarActions": {
-      "hide": "Hide '{0}'",
+      "hide": "Ẩn '{0}'",
       "manageExtension": "Quản lý tiện ích",
       "focusStatusBar": "Tập trung thanh trạng thái"
     },
@@ -5347,11 +5347,11 @@
       "ariaAccessibleViewActionsBottom": "Khám phá các thao tác như tắt gợi ý này (Shift+Tab), nhấn Escape để thoát hộp thoại này.",
       "ariaAccessibleViewActions": "Khám phá các thao tác như tắt gợi ý này (Shift+Tab).",
       "accessibility-help": "Trợ giúp trợ năng",
-      "accessible-view": "Accessible View",
-      "accessible-view-hint": "Accessible View, {0}",
+      "accessible-view": "Chế độ xem hỗ trợ tiếp cận",
+      "accessible-view-hint": "Chế độ xem hỗ trợ tiếp cận, {0}",
       "accessibility-help-hint": "Trợ giúp trợ năng, {0}",
       "accessibleHelpToolbar": "Trợ giúp trợ năng",
-      "accessibleViewToolbar": "Accessible View",
+      "accessibleViewToolbar": "Chế độ xem hỗ trợ tiếp cận",
       "toolbar": "Di chuyển tới thanh công cụ (Shift+Tab).",
       "intro": "Trong Accessible View, bạn có thể:\n",
       "accessibleViewNextPreviousHint": "Hiện mục tiếp theo{0} hoặc mục trước đó{1}.",
@@ -5489,14 +5489,14 @@
     },
     "vs/workbench/contrib/appLayout/common/agentsWindowOrFocusMenuRegistrations": {
       "cursor.agentsWindowNew": "Cửa sổ Agent mới",
-      "cursor.agentsWindowSwitchTo": "Switch to {0}"
+      "cursor.agentsWindowSwitchTo": "Chuyển sang {0}"
     },
     "vs/workbench/contrib/appLayout/electron-sandbox/glassModeActions": {
       "switchToModelSlug.noAgentsWindow": "Không thể mở cửa sổ Agents để chuyển mô hình. Hãy mở cửa sổ Agents rồi thử lại.",
       "switchToModelSlug.agentsWindowRoutingFailed": "Không thể chuyển mô hình trong cửa sổ Agents. Hãy thử lại.",
       "cursor.newAgentsWindow": "Cửa sổ Agent mới",
       "cursor.newAdditionalAgentsWindowDev": "Nhà phát triển: Cửa sổ Agents bổ sung mới",
-      "cursor.switchToNamedWindow": "Switch to {0}",
+      "cursor.switchToNamedWindow": "Chuyển sang {0}",
       "cursor.openOrFocusNamedWindow": "Mở hoặc chuyển tới {0}",
       "cursor.openOrFocusEditorWindow": "Mở hoặc chuyển tới IDE",
       "cursor.openGlassAndSwitchModelSlug": "Mở Glass và chuyển mô hình",
@@ -6087,7 +6087,7 @@
       "cloudUnsupportedAttachmentRejected": "Không thể đính kèm tệp này cho cloud agent."
     },
     "vs/workbench/contrib/composer/browser/promptInputTrays/PromptInputAnchoredTrayHovercard.react": {
-      "composer.anchoredTray.previewAriaLabel": "Preview of {0}"
+      "composer.anchoredTray.previewAriaLabel": "Xem trước {0}"
     },
     "vs/workbench/contrib/composer/browser/realtimeVoice/realtimeVoiceTranscriptEditor": {
       "composer.realtimeVoice.transcriptEditor": "Gọi thoại"
@@ -6102,7 +6102,7 @@
       "composer.transcript.regionLabel": "Bản ghi chat"
     },
     "vs/workbench/contrib/composer/browser/transcript/composerTranscriptToolRuntime": {
-      "composerTranscript.openFileFailed": "Unable to open {0}"
+      "composerTranscript.openFileFailed": "Không thể mở {0}"
     },
     "vs/workbench/contrib/composer/browser/transcript/transcriptLinkAddToChat": {
       "glass.addToChat.ignoredFile": "Cursor bỏ qua {0} nên không thể thêm vào Chat."
@@ -6457,7 +6457,7 @@
       "miInstallAdditionalDebuggers": "&&Cài thêm trình gỡ lỗi...",
       "miToggleDebugConsole": "&&Bảng gỡ lỗi",
       "miViewRun": "&&Chạy",
-      "disassembly": "Disassembly",
+      "disassembly": "Mã dịch ngược",
       "jumpToCursor": "Nhảy tới Cursor",
       "SetNextStatement": "Đặt câu lệnh tiếp theo",
       "inlineBreakpoint": "Điểm dừng inline",
@@ -7079,7 +7079,7 @@
     },
     "vs/workbench/contrib/debug/common/disassemblyViewInput": {
       "disassemblyEditorLabelIcon": "Biểu tượng của nhãn trình soạn thảo disassembly.",
-      "disassemblyInputName": "Disassembly"
+      "disassemblyInputName": "Mã dịch ngược"
     },
     "vs/workbench/contrib/debug/common/loadedScriptsPicker": {
       "moveFocusedView.selectView": "Tìm các script đã tải theo tên"
@@ -7155,7 +7155,7 @@
       "extensionpack": "Gói tiện ích",
       "extensionpacktooltip": "Liệt kê các tiện ích sẽ được cài đặt cùng với tiện ích này",
       "noReadme": "Không có README.",
-      "Readme title": "Readme",
+      "Readme title": "Giới thiệu",
       "extension pack": "Gói tiện ích ({0})",
       "noChangelog": "Không có nhật ký thay đổi.",
       "Changelog title": "Nhật ký thay đổi",
@@ -7270,11 +7270,11 @@
       "enablePreRleaseLabel": "Chuyển sang bản pre-release",
       "disablePreRleaseLabel": "Chuyển sang bản chính thức",
       "install": "Cài đặt",
-      "extensionInfoName": "Name: {0}",
+      "extensionInfoName": "Tên: {0}",
       "extensionInfoId": "Id: {0}",
-      "extensionInfoDescription": "Description: {0}",
+      "extensionInfoDescription": "Mô tả: {0}",
       "extensionInfoVersion": "Phiên bản: {0}",
-      "extensionInfoPublisher": "Publisher: {0}",
+      "extensionInfoPublisher": "Nhà phát hành: {0}",
       "extensionInfoVSMarketplaceLink": "Liên kết VS Marketplace: {0}",
       "download VSIX": "Tải VSIX",
       "download pre-release": "Tải xuống VSIX bản tiền phát hành",
@@ -8563,7 +8563,7 @@
       "installAndRestart": "Cài đặt và khởi động lại"
     },
     "vs/workbench/contrib/logs/common/logs.contribution": {
-      "remote name": "{0} (Remote)",
+      "remote name": "{0} (Từ xa)",
       "setDefaultLogLevel": "Đặt mức nhật ký mặc định",
       "show window log": "Hiện nhật ký cửa sổ"
     },
@@ -8827,7 +8827,7 @@
       "acceptMerge": "&&Chấp nhận merge",
       "merge-editor.source": "Trước khi giải quyết xung đột trong trình soạn thảo merge",
       "workspace.messageN": "Bạn có muốn lưu các thay đổi đã thực hiện với {0} tệp không?",
-      "workspace.message1": "Do you want to save the changes you made to {0}?",
+      "workspace.message1": "Bạn có muốn lưu các thay đổi đã thực hiện với {0} không?",
       "workspace.detailN.unhandled": "Các tệp chứa xung đột chưa xử lý. Thay đổi của bạn sẽ bị mất nếu bạn không lưu.",
       "workspace.detail1.unhandled": "Tệp chứa xung đột chưa xử lý. Thay đổi của bạn sẽ bị mất nếu bạn không lưu.",
       "workspace.detailN.handled": "Thay đổi sẽ mất nếu bạn không lưu.",
@@ -9725,7 +9725,7 @@
       "keybinding": "Phím tắt",
       "when": "Khi",
       "source": "Nguồn",
-      "foundResults": "{0} results",
+      "foundResults": "{0} kết quả",
       "show sorted keybindings": "Đang hiện {0} phím tắt theo thứ tự ưu tiên",
       "show keybindings": "Đang hiện {0} phím tắt theo thứ tự bảng chữ cái",
       "changeLabel": "Đổi phím tắt...",
@@ -10348,7 +10348,7 @@
       "remoteTunnelAccess.machineName": "Tên dùng để đăng ký truy cập remote tunnel. Nếu không đặt, tên máy chủ sẽ được dùng.",
       "remoteTunnelAccess.machineNameRegex": "Tên chỉ được gồm chữ cái, chữ số, dấu gạch dưới và dấu gạch ngang. Tên không được bắt đầu bằng dấu gạch ngang.",
       "remoteTunnelAccess.preventSleep": "Ngăn máy tính này chuyển sang chế độ ngủ khi bật truy cập remote tunnel.",
-      "remoteTunnel.category": "Remote Tunnels"
+      "remoteTunnel.category": "Đường hầm từ xa"
     },
     "vs/workbench/contrib/replNotebook/browser/repl.contribution": {
       "repl.focusLastReplOutput": "Tập trung vào lần thực thi REPL gần nhất",
@@ -10503,7 +10503,7 @@
     },
     "vs/workbench/contrib/scm/browser/scmAccessibilityHelp": {
       "state-msg1": "Repository hiển thị: {0}",
-      "state-msg2": "Repository: {0}",
+      "state-msg2": "Kho mã: {0}",
       "state-msg3": "Tham chiếu mục lịch sử: {0}",
       "state-msg4": "Thông điệp commit: {0}",
       "enabled": "Đã bật",
@@ -10964,7 +10964,7 @@
       "invalidQueryStringError": "Tất cả dấu gạch chéo ngược trong chuỗi truy vấn phải được thoát (\\\\)",
       "numFiles": "{0} tệp",
       "oneFile": "1 tệp",
-      "numResults": "{0} results",
+      "numResults": "{0} kết quả",
       "oneResult": "1 kết quả",
       "noResults": "Không có kết quả",
       "searchMaxResultsWarning": "Tập kết quả chỉ chứa một phần các kết quả khớp. Hãy tìm kiếm cụ thể hơn để thu hẹp kết quả."
@@ -13222,7 +13222,7 @@
     "vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedAccessibleView": {
       "gettingStarted.step": "{0}\n{1}",
       "gettingStarted.title": "Tiêu đề: {0}",
-      "gettingStarted.description": "Description: {0}"
+      "gettingStarted.description": "Mô tả: {0}"
     },
     "vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedColors": {
       "welcomePage.background": "Màu nền của trang Chào mừng.",
@@ -13629,7 +13629,7 @@
       "rememberCredentials": "Ghi nhớ thông tin đăng nhập của tôi",
       "shutdownChatStreamingCancel": "Hủy",
       "shutdownBackgroundTerminalCancel": "Hủy",
-      "shutdownErrorDetail": "Error: {0}",
+      "shutdownErrorDetail": "Lỗi: {0}",
       "willShutdownDetail": "Các thao tác sau vẫn đang chạy: \n{0}",
       "shutdownErrorClose": "Một lỗi không mong muốn đã ngăn cửa sổ đóng lại",
       "shutdownErrorQuit": "Một lỗi không mong muốn đã ngăn ứng dụng thoát",
@@ -13980,7 +13980,7 @@
     },
     "vs/workbench/services/dialogs/browser/abstractFileDialogService": {
       "saveChangesDetail": "Thay đổi sẽ mất nếu bạn không lưu.",
-      "saveChangesMessage": "Do you want to save the changes you made to {0}?",
+      "saveChangesMessage": "Bạn có muốn lưu các thay đổi đã thực hiện với {0} không?",
       "saveChangesMessages": "Bạn có muốn lưu các thay đổi của {0} tệp sau không?",
       "saveAll": "&&Lưu tất cả",
       "save": "&&Lưu",
@@ -14192,16 +14192,16 @@
       "This is Bad": "Tôi tái hiện được",
       "bisect.singular": "Extension Bisect đang hoạt động và đã tắt 1 tiện ích. Hãy kiểm tra xem bạn có còn tái hiện được sự cố không và tiếp tục bằng cách chọn một trong các tùy chọn sau.",
       "bisect.plural": "Extension Bisect đang hoạt động và đã tắt {0} tiện ích. Hãy kiểm tra xem bạn có còn tái hiện được sự cố không và tiếp tục bằng cách chọn một trong các tùy chọn sau.",
-      "msg.start": "Extension Bisect",
+      "msg.start": "Chia đôi tiện ích mở rộng",
       "detail.start": "Extension Bisect sẽ dùng tìm kiếm nhị phân để tìm tiện ích gây ra sự cố. Trong quá trình này, cửa sổ sẽ tải lại nhiều lần (~{0} lần). Mỗi lần, bạn phải xác nhận xem mình có còn gặp sự cố hay không.",
       "msg2": "&&Bắt đầu Extension Bisect",
-      "done.msg": "Extension Bisect",
+      "done.msg": "Chia đôi tiện ích mở rộng",
       "done.detail2": "Extension Bisect đã hoàn tất nhưng không xác định được tiện ích nào. Đây có thể là sự cố của {0}.",
       "report": "&&Báo cáo sự cố & tiếp tục",
       "continue": "Tiếp tục",
       "done.detail": "Extension Bisect đã hoàn tất và xác định {0} là tiện ích gây ra sự cố.",
       "done.disbale": "Giữ tiện ích này ở trạng thái tắt",
-      "msg.next": "Extension Bisect",
+      "msg.next": "Chia đôi tiện ích mở rộng",
       "bisect": "Extension Bisect đang hoạt động và đã tắt {0} tiện ích. Hãy kiểm tra xem bạn có còn tái hiện được sự cố không và tiếp tục bằng cách chọn một trong các tùy chọn sau.",
       "next.good": "Tôi &&không tái hiện được",
       "next.bad": "Tôi &&tái hiện được",
@@ -15068,7 +15068,7 @@
     },
     "vs/workbench/services/views/browser/viewDescriptorService": {
       "user": "Vùng chứa khung xem của người dùng",
-      "hideView": "Hide '{0}'",
+      "hideView": "Ẩn '{0}'",
       "toggleVisibilityDescription": "Bật/tắt hiển thị khung xem {0} nếu vùng chứa khung xem chứa nó đang hiển thị",
       "hideViewDescription": "Ẩn khung xem {0} nếu nó đang hiển thị và vùng chứa khung xem chứa nó cũng đang hiển thị",
       "resetViewLocation": "Đặt lại vị trí"

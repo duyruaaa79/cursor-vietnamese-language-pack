@@ -11,13 +11,13 @@
       "displayName": "Chủ đề mặc định",
       "description": "Các chủ đề sáng và tối mặc định của Visual Studio",
       "darkPlusColorThemeLabel": "Dark+",
-      "darkModernThemeLabel": "Dark Modern",
+      "darkModernThemeLabel": "Tối hiện đại",
       "lightPlusColorThemeLabel": "Light+",
-      "lightModernThemeLabel": "Light Modern",
+      "lightModernThemeLabel": "Sáng hiện đại",
       "darkColorThemeLabel": "Dark (Visual Studio)",
       "lightColorThemeLabel": "Light (Visual Studio)",
-      "hcColorThemeLabel": "Dark High Contrast",
-      "lightHcColorThemeLabel": "Light High Contrast",
+      "hcColorThemeLabel": "Tối tương phản cao",
+      "lightHcColorThemeLabel": "Sáng tương phản cao",
       "minimalIconThemeLabel": "Minimal (Cursor)"
     }
   }

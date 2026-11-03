@@ -119,7 +119,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
         "name": "cursor-vietnamese-language-pack",
         "displayName": "Vietnamese Language Pack for Cursor",
         "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
-        "version": "0.2.0",
+        "version": "0.3.0",
         "publisher": "duy",
         "license": "MIT",
         "engines": {"vscode": "^1.80.0"},

@@ -3,7 +3,7 @@
 Gói ngôn ngữ **Tiếng Việt** cho [Cursor](https://cursor.com). Extension này Việt hóa:
 
 - giao diện lõi (menu, Explorer, Settings, Git, Command Palette) qua catalog NLS của ứng dụng;
-- giao diện riêng của Cursor không đi qua NLS (Cursor Settings, Agents Window, chat, thông báo) bằng cách vá chuỗi hiển thị trong bundle `workbench.desktop.main.js` và `workbench.glass.main.js`.
+- giao diện riêng của Cursor không đi qua NLS (Cursor Settings, Agents Window, chat, Automations, thanh toán, thông báo) bằng cách vá chuỗi hiển thị trong các bundle `workbench.*.js`.
 
 Sau mỗi lần Cursor cập nhật, extension tự Việt hóa lại khi Cursor khởi động và nhắc bạn mở lại Cursor một lần.
 
@@ -41,7 +41,8 @@ Dòng lệnh: `node bin/cli.js <apply|restore|status|extract|sync-langpack>`.
 ## Giới hạn
 
 - Chuỗi mới xuất hiện trong bản Cursor mới sẽ giữ tiếng Anh cho tới khi `dist/dict.json` trên GitHub được bổ sung.
-- Chuỗi nằm trong biểu thức (ví dụ `cond ? "Back" : ...`, đối số hàm) không được vá để tránh làm hỏng logic.
+- Chuỗi mà Cursor dùng để so sánh, `switch`, làm khóa tra cứu hoặc lưu trữ được giữ tiếng Anh để không làm hỏng logic. Riêng phép so sánh với `.label`/`.title` do chính Cursor gán thì được dịch đồng bộ cả hai phía.
+- Prompt gửi cho mô hình AI, thông báo lỗi nội bộ và code của các extension tích hợp (`cursor-agent-*`, `cursor-mcp`, …) không bị sửa.
 - Trước khi gỡ extension, chạy **Khôi phục giao diện gốc của Cursor**; nếu không, bundle đã vá vẫn giữ tiếng Việt cho tới lần Cursor cập nhật kế tiếp.
 - Tên sản phẩm (Cursor, Agent, Composer, Git, MCP) giữ nguyên.
 

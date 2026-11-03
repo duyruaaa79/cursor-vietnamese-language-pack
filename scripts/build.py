@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from translate_vi import translate  # noqa: E402
+from translate_vi import EXACT, translate  # noqa: E402
 
 CURSOR_APP = Path("/Applications/Cursor.app/Contents/Resources/app")
 
@@ -96,6 +97,19 @@ def build_extensions() -> list[dict[str, str]]:
     return translations
 
 
+def build_dict() -> dict[str, str]:
+    """English → Vietnamese for every string the extension may need at runtime."""
+    sources = list(load_json(CURSOR_APP / "out" / "nls.messages.json"))
+    for nls_path in (CURSOR_APP / "extensions").glob("*/package.nls.json"):
+        sources += [v for v in load_json(nls_path).values() if isinstance(v, str)]
+    out = dict(EXACT)
+    for en in sources:
+        vi = translate(en)
+        if vi != en:
+            out[en] = vi
+    return dict(sorted(out.items()))
+
+
 def write_package_json(ext_translations: list[dict[str, str]]) -> None:
     contrib = [
         {"id": "vscode", "path": "./translations/main.i18n.json"},
@@ -104,19 +118,41 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
     package = {
         "name": "cursor-vietnamese-language-pack",
         "displayName": "Vietnamese Language Pack for Cursor",
-        "description": "Gói ngôn ngữ Tiếng Việt cho Cursor. Việt hóa menu, workbench, Git và chuỗi Cursor (Agent, Composer) lấy từ catalog NLS của ứng dụng.",
-        "version": "0.1.0",
+        "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
+        "version": "0.2.0",
         "publisher": "duy",
         "license": "MIT",
         "engines": {"vscode": "^1.80.0"},
         "icon": "icon.png",
         "categories": ["Language Packs"],
+        "main": "./src/extension.js",
+        "activationEvents": ["onStartupFinished"],
         "keywords": ["vietnamese", "tiếng việt", "language pack", "i18n", "l10n", "cursor"],
         "scripts": {
             "build": "python3 scripts/build.py",
             "package": "python3 scripts/build.py && npx --yes @vscode/vsce package --allow-missing-repository",
         },
         "contributes": {
+            "commands": [
+                {"command": "cursorVietnamese.apply", "title": "Việt hóa giao diện Cursor", "category": "Tiếng Việt"},
+                {"command": "cursorVietnamese.restore", "title": "Khôi phục giao diện gốc của Cursor", "category": "Tiếng Việt"},
+                {"command": "cursorVietnamese.status", "title": "Xem trạng thái Việt hóa", "category": "Tiếng Việt"},
+            ],
+            "configuration": {
+                "title": "Tiếng Việt",
+                "properties": {
+                    "cursorVietnamese.autoPatch": {
+                        "type": "boolean",
+                        "default": True,
+                        "description": "Tự Việt hóa giao diện riêng của Cursor (Cursor Settings, Agents Window, chat) khi khởi động, kể cả sau khi Cursor cập nhật.",
+                    },
+                    "cursorVietnamese.autoUpdateDictionary": {
+                        "type": "boolean",
+                        "default": True,
+                        "description": "Mỗi ngày tải bản dịch mới nhất từ GitHub.",
+                    },
+                },
+            },
             "localizations": [
                 {
                     "languageId": "vi",
@@ -186,6 +222,18 @@ def main() -> None:
     print(f"  extensions: {len(ext_translations)} packs")
     write_package_json(ext_translations)
     write_icon()
+    dictionary = build_dict()
+    (ROOT / "dist").mkdir(exist_ok=True)
+    with (ROOT / "dist" / "dict.json").open("w", encoding="utf-8") as f:
+        json.dump(dictionary, f, ensure_ascii=False, indent=0)
+        f.write("\n")
+    print(f"Wrote dist/dict.json ({len(dictionary)} entries)")
+    # Regenerate translations with the runtime code so the extension sees identical files
+    # on first start and does not ask for a needless restart.
+    subprocess.run(
+        ["node", str(ROOT / "bin" / "cli.js"), "sync-langpack", str(ROOT), "--app", str(CURSOR_APP)],
+        check=True,
+    )
     print("Wrote package.json and icon.png")
     print("Done.")
 

@@ -1,8 +1,8 @@
 {
   "name": "cursor-vietnamese-language-pack",
   "displayName": "Vietnamese Language Pack for Cursor",
-  "description": "Gói ngôn ngữ Tiếng Việt cho Cursor. Việt hóa menu, workbench, Git và chuỗi Cursor (Agent, Composer) lấy từ catalog NLS của ứng dụng.",
-  "version": "0.1.0",
+  "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
+  "version": "0.2.0",
   "publisher": "duy",
   "license": "MIT",
   "engines": {
@@ -11,6 +11,10 @@
   "icon": "icon.png",
   "categories": [
     "Language Packs"
+  ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
   ],
   "keywords": [
     "vietnamese",
@@ -25,6 +29,38 @@
     "package": "python3 scripts/build.py && npx --yes @vscode/vsce package --allow-missing-repository"
   },
   "contributes": {
+    "commands": [
+      {
+        "command": "cursorVietnamese.apply",
+        "title": "Việt hóa giao diện Cursor",
+        "category": "Tiếng Việt"
+      },
+      {
+        "command": "cursorVietnamese.restore",
+        "title": "Khôi phục giao diện gốc của Cursor",
+        "category": "Tiếng Việt"
+      },
+      {
+        "command": "cursorVietnamese.status",
+        "title": "Xem trạng thái Việt hóa",
+        "category": "Tiếng Việt"
+      }
+    ],
+    "configuration": {
+      "title": "Tiếng Việt",
+      "properties": {
+        "cursorVietnamese.autoPatch": {
+          "type": "boolean",
+          "default": true,
+          "description": "Tự Việt hóa giao diện riêng của Cursor (Cursor Settings, Agents Window, chat) khi khởi động, kể cả sau khi Cursor cập nhật."
+        },
+        "cursorVietnamese.autoUpdateDictionary": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mỗi ngày tải bản dịch mới nhất từ GitHub."
+        }
+      }
+    },
     "localizations": [
       {
         "languageId": "vi",

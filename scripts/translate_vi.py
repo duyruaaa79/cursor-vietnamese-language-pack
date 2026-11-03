@@ -1059,10 +1059,12 @@ def _word_count(text: str) -> int:
 
 
 def _load_exact() -> dict[str, str]:
-    path = Path(__file__).resolve().parents[1] / "i18n" / "vi.json"
-    if not path.exists():
-        return {}
-    return json.loads(path.read_text(encoding="utf-8"))
+    merged: dict[str, str] = {}
+    for name in ("vi.json", "cursor-ui.json"):
+        path = Path(__file__).resolve().parents[1] / "i18n" / name
+        if path.exists():
+            merged.update(json.loads(path.read_text(encoding="utf-8")))
+    return merged
 
 
 EXACT = _load_exact()

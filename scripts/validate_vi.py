@@ -28,6 +28,8 @@ def problems(en: str, vi: str) -> list[str]:
         out.append("&& mnemonic mismatch")
     if en.endswith("...") and not vi.endswith("..."):
         out.append("lost trailing ...")
+    if en[:1].isspace() != vi[:1].isspace() or en[-1:].isspace() != vi[-1:].isspace():
+        out.append("leading/trailing whitespace mismatch")
     return out
 
 

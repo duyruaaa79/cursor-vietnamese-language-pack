@@ -1,42 +1,59 @@
 # Vietnamese Language Pack for Cursor
 
-Gói ngôn ngữ **Tiếng Việt** cho [Cursor](https://cursor.com). Extension này Việt hóa giao diện lõi (menu, Explorer, Settings, Git, Command Palette) và các chuỗi Cursor đi qua catalog NLS của ứng dụng (Agent, Composer, Plan, …).
+Gói ngôn ngữ **Tiếng Việt** cho [Cursor](https://cursor.com). Extension này Việt hóa:
 
-Microsoft chưa phát hành Language Pack tiếng Việt chính thức. Gói này được tạo từ catalog NLS của Cursor đã cài trên máy, rồi dịch sang tiếng Việt.
+- giao diện lõi (menu, Explorer, Settings, Git, Command Palette) qua catalog NLS của ứng dụng;
+- giao diện riêng của Cursor không đi qua NLS (Cursor Settings, Agents Window, chat, thông báo) bằng cách vá chuỗi hiển thị trong bundle `workbench.desktop.main.js` và `workbench.glass.main.js`.
+
+Sau mỗi lần Cursor cập nhật, extension tự Việt hóa lại khi Cursor khởi động và nhắc bạn mở lại Cursor một lần.
 
 ## Cài vào Cursor
 
 1. Tạo file VSIX:
 
 ```bash
-npm install -g @vscode/vsce
-python3 scripts/build.py
-vsce package --allow-missing-repository
+npm run package
 ```
 
 2. Trong Cursor: `Cmd+Shift+P` → **Extensions: Install from VSIX...** → chọn file `.vsix`.
 3. `Cmd+Shift+P` → **Configure Display Language** → chọn **Tiếng Việt** (`vi`).
-4. Khởi động lại Cursor.
+4. Thoát hẳn Cursor (`Cmd+Q`) rồi mở lại.
 
-## Phạm vi
+## Cách tự Việt hóa sau khi cập nhật
 
-| Được Việt hóa | Có thể vẫn tiếng Anh |
-| --- | --- |
-| Menu, Explorer, Search, SCM, Debug, Extensions | Màn hình Cursor Settings nếu không đi qua NLS |
-| Settings lõi, Command Palette (một phần) | Chat/Agent render bằng React ngoài NLS |
-| Chuỗi Cursor có trong `nls.messages.json` | Tên sản phẩm: Cursor, Agent, Composer, Git |
+Khi Cursor khởi động, extension:
 
-Cập nhật Cursor có thể thêm chuỗi mới. Chạy lại `python3 scripts/build.py` rồi đóng gói VSIX.
+1. tải bản dịch mới nhất `dist/dict.json` từ GitHub (tối đa một lần mỗi ngày);
+2. dựng lại language pack theo đúng chuỗi tiếng Anh của bản Cursor đang chạy, rồi xóa cache NLS cũ;
+3. vá chuỗi hiển thị trong bundle Cursor, sao lưu bản gốc vào `~/.cursor-vietnamese/backup/<commit>/` và cập nhật checksum trong `product.json` để Cursor không báo “cài đặt bị hỏng”;
+4. nếu có thay đổi, hiện thông báo kèm nút **Thoát Cursor**.
+
+Lệnh trong Command Palette:
+
+- **Tiếng Việt: Việt hóa giao diện Cursor** — vá ngay
+- **Tiếng Việt: Khôi phục giao diện gốc của Cursor** — trả file gốc và tắt tự vá
+- **Tiếng Việt: Xem trạng thái Việt hóa**
+
+Cài đặt: `cursorVietnamese.autoPatch`, `cursorVietnamese.autoUpdateDictionary` (mặc định bật).
+
+Dòng lệnh: `node bin/cli.js <apply|restore|status|extract|sync-langpack>`.
+
+## Giới hạn
+
+- Chuỗi mới xuất hiện trong bản Cursor mới sẽ giữ tiếng Anh cho tới khi `dist/dict.json` trên GitHub được bổ sung.
+- Chuỗi nằm trong biểu thức (ví dụ `cond ? "Back" : ...`, đối số hàm) không được vá để tránh làm hỏng logic.
+- Trước khi gỡ extension, chạy **Khôi phục giao diện gốc của Cursor**; nếu không, bundle đã vá vẫn giữ tiếng Việt cho tới lần Cursor cập nhật kế tiếp.
+- Tên sản phẩm (Cursor, Agent, Composer, Git, MCP) giữ nguyên.
 
 ## Phát triển
 
-- `i18n/vi.json` — bản dịch chính, ánh xạ nguyên văn chuỗi tiếng Anh → tiếng Việt
-- `scripts/ui_phrases.py`, `scripts/translate_vi.py` — cụm từ dự phòng khi chuỗi chưa có trong `i18n/vi.json`
-- `scripts/validate_vi.py` — kiểm tra bản dịch giữ đủ placeholder (`{0}`, `&&`, backtick, URL)
-- `scripts/merge_translations.py` — gộp các file bản dịch mới vào `i18n/vi.json`
-- `scripts/build.py` — đọc `/Applications/Cursor.app` và ghi `translations/`
-
-Chuỗi chưa có bản dịch sẽ giữ nguyên tiếng Anh thay vì dịch ghép từng từ.
+- `i18n/vi.json` — bản dịch catalog NLS, ánh xạ nguyên văn tiếng Anh → tiếng Việt
+- `i18n/cursor-ui.json` — bản dịch chuỗi giao diện riêng của Cursor
+- `scripts/build.py` — đọc `/Applications/Cursor.app`, ghi `translations/`, `dist/dict.json` và `package.json`
+- `scripts/validate_vi.py` — kiểm tra placeholder (`{0}`, `&&`, backtick, URL, thẻ HTML)
+- `scripts/merge_translations.py [--target i18n/cursor-ui.json]` — gộp bản dịch mới
+- `src/` — code extension: vá bundle, đồng bộ language pack, tải từ điển
+- `node bin/cli.js extract` — liệt kê chuỗi giao diện Cursor để dịch thêm
 
 ## Giấy phép
 

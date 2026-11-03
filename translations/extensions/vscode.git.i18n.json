@@ -317,7 +317,7 @@
       "submenu.commit.signoff": "Sign Off",
       "submenu.changes": "Thay đổi",
       "submenu.pullpush": "Pull, Push",
-      "submenu.branch": "Branch",
+      "submenu.branch": "Nhánh",
       "submenu.remotes": "Từ xa",
       "submenu.stash": "Stash",
       "submenu.tags": "Tag",

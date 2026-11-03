@@ -179,7 +179,7 @@
       "ctrlKey.long": "Control",
       "shiftKey.long": "Shift",
       "optKey.long": "Option",
-      "cmdKey.long": "Command",
+      "cmdKey.long": "Lệnh",
       "altKey.long": "Alt",
       "windowsKey.long": "Windows",
       "superKey.long": "Super"
@@ -9721,7 +9721,7 @@
       "SearchKeybindings.KeybindingsSearchPlaceholder": "Đang ghi phím. Nhấn Escape để thoát",
       "clearInput": "Xóa ô tìm kiếm phím tắt",
       "recording": "Đang ghi phím",
-      "command": "Command",
+      "command": "Lệnh",
       "keybinding": "Phím tắt",
       "when": "Khi",
       "source": "Nguồn",

@@ -9,7 +9,7 @@ Sau mỗi lần Cursor cập nhật, extension tự Việt hóa lại khi Cursor
 
 > **macOS:** macOS kiểm tra chữ ký số của toàn bộ `Cursor.app` (kể cả file JS) và giết tiến trình ngay khi mở nếu có file bị sửa (`amfid`: “The signature on the file is invalid”). Vì vậy trên macOS extension **không bao giờ sửa `Cursor.app`**; nếu phát hiện file đã bị bản cũ vá, extension tự khôi phục bản gốc. Nếu Cursor không mở được, chạy `~/.cursor-vietnamese/Khoi-phuc-Cursor.command`.
 >
-> Thay vào đó, giao diện riêng của Cursor được Việt hóa **lúc chạy**: extension tạo ứng dụng `~/Applications/Cursor Tiếng Việt.app`, ứng dụng này mở Cursor với `--remote-debugging-port=0` (cổng ngẫu nhiên, chỉ trên `127.0.0.1`), rồi extension chèn bộ dịch vào từng cửa sổ qua DevTools protocol. Hãy mở Cursor bằng ứng dụng này (có thể kéo vào Dock thay cho Cursor). Nếu mở Cursor theo cách thường, extension sẽ hỏi có mở lại không. Lưu ý: khi cổng DevTools mở, chương trình khác chạy dưới tài khoản macOS của bạn có thể điều khiển Cursor; tắt bằng `cursorVietnamese.runtimeTranslate`.
+> Thay vào đó, giao diện riêng của Cursor được Việt hóa **lúc chạy**: khi bạn mở Cursor theo cách thường, extension tự khởi động lại Cursor một lần (vài giây, cửa sổ tự mở lại) với `--remote-debugging-port=0` (cổng ngẫu nhiên, chỉ trên `127.0.0.1`), rồi chèn bộ dịch vào từng cửa sổ qua DevTools protocol. Chỉ có một Cursor duy nhất, không cần lối tắt riêng. Lưu ý: khi cổng DevTools mở, chương trình khác chạy dưới tài khoản macOS của bạn có thể điều khiển Cursor; tắt bằng `cursorVietnamese.runtimeTranslate`.
 
 ## Cài vào Cursor
 
@@ -36,7 +36,7 @@ Lệnh trong Command Palette:
 
 - **Tiếng Việt: Việt hóa giao diện Cursor** — vá ngay
 - **Tiếng Việt: Khôi phục giao diện gốc của Cursor** — trả file gốc và tắt tự vá
-- **Tiếng Việt: Mở lại Cursor ở chế độ Việt hóa đầy đủ** — macOS: thoát và mở lại Cursor qua “Cursor Tiếng Việt”
+- **Tiếng Việt: Khởi động lại Cursor để Việt hóa đầy đủ** — macOS
 - **Tiếng Việt: Xem trạng thái Việt hóa**
 
 Cài đặt: `cursorVietnamese.autoPatch`, `cursorVietnamese.autoUpdateDictionary` (mặc định bật).

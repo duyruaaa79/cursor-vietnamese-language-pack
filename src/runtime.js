@@ -120,50 +120,37 @@ function relaunch({ appRoot, mainPid, quit }) {
 	return quit();
 }
 
-const LAUNCHER_NAME = 'Cursor Tiếng Việt.app';
+const LEGACY_LAUNCHER = path.join(os.homedir(), 'Applications', 'Cursor Tiếng Việt.app');
 
-// Writes ~/Applications/Cursor Tiếng Việt.app, a tiny launcher that opens Cursor with the
-// DevTools flag. Cursor itself is launched by LaunchServices, so it keeps its own identity
-// and macOS permissions.
-function ensureLauncherApp(appRoot) {
-	const app = cursorAppPath(appRoot);
-	const root = path.join(os.homedir(), 'Applications', LAUNCHER_NAME, 'Contents');
-	const plist = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>CFBundleExecutable</key><string>launch</string>
-	<key>CFBundleIdentifier</key><string>vn.duy.cursor-tieng-viet</string>
-	<key>CFBundleName</key><string>Cursor Tiếng Việt</string>
-	<key>CFBundleDisplayName</key><string>Cursor Tiếng Việt</string>
-	<key>CFBundleIconFile</key><string>Cursor</string>
-	<key>CFBundlePackageType</key><string>APPL</string>
-	<key>CFBundleVersion</key><string>1</string>
-	<key>LSUIElement</key><true/>
-</dict>
-</plist>
-`;
-	const launch = `#!/bin/sh\nexec open -a "${app}" --args ${FLAG} "$@"\n`;
-	const files = [
-		[path.join(root, 'Info.plist'), plist, 0o644],
-		[path.join(root, 'MacOS', 'launch'), launch, 0o755],
-	];
-	let changed = false;
-	for (const [file, text, mode] of files) {
-		if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === text) {
-			continue;
-		}
-		fs.mkdirSync(path.dirname(file), { recursive: true });
-		fs.writeFileSync(file, text, { mode });
-		fs.chmodSync(file, mode);
-		changed = true;
-	}
-	const icon = path.join(root, 'Resources', 'Cursor.icns');
-	if (!fs.existsSync(icon)) {
-		fs.mkdirSync(path.dirname(icon), { recursive: true });
-		fs.copyFileSync(path.join(app, 'Contents', 'Resources', 'Cursor.icns'), icon);
-	}
-	return { path: path.dirname(root), changed };
+// Version 0.4.0 created a separate launcher app; Cursor is now relaunched in place instead.
+function removeLegacyLauncher() {
+	fs.rmSync(LEGACY_LAUNCHER, { recursive: true, force: true });
 }
 
-module.exports = { start, relaunch, ensureLauncherApp, activePort, LAUNCHER_NAME };
+// Lets exactly one window of this Cursor process trigger the relaunch, and refuses when a
+// relaunch happened moments ago (Cursor came back without the flag), so it can never loop.
+function claimRelaunch(stateDir, mainPid) {
+	fs.mkdirSync(stateDir, { recursive: true });
+	const last = path.join(stateDir, 'relaunch-last');
+	try {
+		if (Date.now() - fs.statSync(last).mtimeMs < 90_000) {
+			return false;
+		}
+	} catch {
+		// never relaunched before
+	}
+	try {
+		fs.writeFileSync(path.join(stateDir, `relaunch-${mainPid}`), '', { flag: 'wx' });
+	} catch {
+		return false;
+	}
+	for (const name of fs.readdirSync(stateDir)) {
+		if (/^relaunch-\d+$/.test(name) && name !== `relaunch-${mainPid}`) {
+			fs.rmSync(path.join(stateDir, name), { force: true });
+		}
+	}
+	fs.writeFileSync(last, String(mainPid));
+	return true;
+}
+
+module.exports = { start, relaunch, claimRelaunch, removeLegacyLauncher, activePort };

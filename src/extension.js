@@ -69,6 +69,16 @@ function reportError(err) {
 
 async function runAutomatic(context) {
 	try {
+		if (patcher.bundlePatchingBlocked()) {
+			if (patcher.status({ appRoot: vscode.env.appRoot }).some(s => s.patched)) {
+				const restored = patcher.restore({ appRoot: vscode.env.appRoot });
+				log(`restored files patched by an older version: ${restored.join(', ')}`);
+			}
+			runtime.removeLegacyLauncher();
+			if (await startRuntime(context) === 'relaunching') {
+				return;
+			}
+		}
 		if (config().get('autoUpdateDictionary', true)) {
 			try {
 				if (await dictionary.refresh(patcher.stateDir())) {
@@ -78,15 +88,10 @@ async function runAutomatic(context) {
 				log(`dictionary update skipped: ${err.message}`);
 			}
 		}
-		if (patcher.bundlePatchingBlocked() && patcher.status({ appRoot: vscode.env.appRoot }).some(s => s.patched)) {
-			const restored = patcher.restore({ appRoot: vscode.env.appRoot });
-			log(`restored files patched by an older version: ${restored.join(', ')}`);
-		}
 		if (patcher.bundlePatchingBlocked()) {
 			if (localize(context)) {
 				await promptRestart();
 			}
-			await startRuntime(context);
 		} else if (patcher.isDisabled()) {
 			log('auto patch disabled by the rescue script; run "Việt hóa giao diện Cursor" to enable again');
 		} else if (config().get('autoPatch', true) && localize(context)) {
@@ -105,41 +110,26 @@ function relaunchFull() {
 	});
 }
 
-// macOS only: translates Cursor's own UI in the running windows. Returns true when connected.
-async function startRuntime(context, { prompt = true } = {}) {
+// macOS only: translates Cursor's own UI in the running windows. When Cursor was opened
+// without the DevTools flag, restarts it once with the flag (automatic unless `manual`).
+// Returns 'connected', 'relaunching' or 'off'.
+async function startRuntime(context, { manual = false } = {}) {
 	if (!config().get('runtimeTranslate', true)) {
-		return false;
-	}
-	try {
-		runtime.ensureLauncherApp(vscode.env.appRoot);
-	} catch (err) {
-		log(`launcher app not created: ${err.message}`);
+		return 'off';
 	}
 	const dict = dictionary.load(context.extensionPath, patcher.stateDir());
 	const cdp = await runtime.start({ userDataDir: userDataDir(context), dict, log });
 	if (cdp) {
 		log('runtime translator connected');
 		context.subscriptions.push({ dispose: () => cdp.close() });
-		return true;
+		return 'connected';
 	}
-	const mainPid = process.ppid;
-	if (!prompt || context.globalState.get('relaunchPromptPid') === mainPid) {
-		return false;
-	}
-	await context.globalState.update('relaunchPromptPid', mainPid);
-	const now = 'Mở lại ngay';
-	const never = 'Không hỏi lại';
-	const choice = await vscode.window.showInformationMessage(
-		`Để Việt hóa cả giao diện riêng của Cursor (Cursor Settings, Agents, chat), Cursor cần được mở qua ứng dụng “${runtime.LAUNCHER_NAME.replace(/\.app$/, '')}” trong thư mục Applications của bạn. Mở lại Cursor ngay?`,
-		now,
-		never
-	);
-	if (choice === now) {
+	if (manual || runtime.claimRelaunch(patcher.stateDir(), process.ppid)) {
+		log('restarting Cursor with the DevTools flag');
 		await relaunchFull();
-	} else if (choice === never) {
-		await config().update('runtimeTranslate', false, vscode.ConfigurationTarget.Global);
+		return 'relaunching';
 	}
-	return false;
+	return 'off';
 }
 
 function activate(context) {
@@ -153,12 +143,10 @@ function activate(context) {
 				if (patcher.bundlePatchingBlocked()) {
 					const restart = localize(context);
 					await config().update('runtimeTranslate', true, vscode.ConfigurationTarget.Global);
-					if (!(await startRuntime(context, { prompt: false }))) {
-						const now = 'Mở lại ngay';
-						if (await vscode.window.showInformationMessage('Cần mở lại Cursor để Việt hóa cả giao diện riêng của Cursor.', now) === now) {
-							await relaunchFull();
-						}
-					} else if (restart) {
+					if (await startRuntime(context, { manual: true }) !== 'connected') {
+						return;
+					}
+					if (restart) {
 						await promptRestart();
 					} else {
 						vscode.window.showInformationMessage('Giao diện Cursor đã được Việt hóa với bản dịch mới nhất.');
@@ -193,7 +181,7 @@ function activate(context) {
 		})
 	);
 
-	setTimeout(() => runAutomatic(context), 3000);
+	setTimeout(() => runAutomatic(context), patcher.bundlePatchingBlocked() ? 0 : 3000);
 }
 
 function deactivate() { }

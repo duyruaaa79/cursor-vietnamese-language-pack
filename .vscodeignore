@@ -1,0 +1,8 @@
+.vscode/**
+.github/**
+scripts/**
+tmp/**
+*.vsix
+.gitignore
+**/*.pyc
+**/__pycache__/**

@@ -9,7 +9,7 @@
   "contents": {
     "package": {
       "displayName": "Cursor Shadow Workspace",
-      "description": "Manages a hidden local window that AI agents can use to refine their code before showing it to you."
+      "description": "Quản lý một cửa sổ cục bộ ẩn mà các AI agent có thể dùng để tinh chỉnh mã trước khi hiển thị cho bạn."
     }
   }
 }

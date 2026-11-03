@@ -8,11 +8,11 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "description": "Extension to add Jake capabilities to VS Code.",
-      "displayName": "Jake support cho với Mã",
-      "jake.taskDefinition.type.description": "Jake tác vụ tới customize.",
-      "jake.taskDefinition.file.description": "The Jake file that provides the task. Can be omitted.",
-      "config.jake.autoDetect": "Controls enablement of Jake task detection. Jake task detection can cause files in any open workspace to be executed."
+      "description": "Tiện ích bổ sung khả năng Jake cho VS Code.",
+      "displayName": "Hỗ trợ Jake cho VS Code",
+      "jake.taskDefinition.type.description": "Tác vụ Jake cần tùy chỉnh.",
+      "jake.taskDefinition.file.description": "Tệp Jake cung cấp tác vụ. Có thể bỏ qua.",
+      "config.jake.autoDetect": "Kiểm soát việc bật phát hiện tác vụ Jake. Việc phát hiện tác vụ Jake có thể khiến các tệp trong bất kỳ workspace đang mở nào bị thực thi."
     }
   }
 }

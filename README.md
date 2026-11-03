@@ -30,8 +30,13 @@ Cập nhật Cursor có thể thêm chuỗi mới. Chạy lại `python3 scripts
 
 ## Phát triển
 
-- `scripts/translate_vi.py` — từ điển và quy tắc dịch
+- `i18n/vi.json` — bản dịch chính, ánh xạ nguyên văn chuỗi tiếng Anh → tiếng Việt
+- `scripts/ui_phrases.py`, `scripts/translate_vi.py` — cụm từ dự phòng khi chuỗi chưa có trong `i18n/vi.json`
+- `scripts/validate_vi.py` — kiểm tra bản dịch giữ đủ placeholder (`{0}`, `&&`, backtick, URL)
+- `scripts/merge_translations.py` — gộp các file bản dịch mới vào `i18n/vi.json`
 - `scripts/build.py` — đọc `/Applications/Cursor.app` và ghi `translations/`
+
+Chuỗi chưa có bản dịch sẽ giữ nguyên tiếng Anh thay vì dịch ghép từng từ.
 
 ## Giấy phép
 

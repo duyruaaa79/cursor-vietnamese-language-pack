@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Razor Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting, bracket matching and folding in Razor files."
+      "displayName": "Cơ bản về ngôn ngữ Razor",
+      "description": "Cung cấp tô sáng cú pháp, khớp dấu ngoặc và thu gọn trong các tệp Razor."
     }
   }
 }

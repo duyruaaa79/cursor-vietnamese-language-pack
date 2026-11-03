@@ -8,16 +8,16 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "configuration.suggest.basic": "Controls whether the built-in PHP language suggestions are enabled. The support suggests PHP globals and variables.",
-      "configuration.validate.enable": "Enable/disable built-in PHP validation.",
-      "configuration.validate.executablePath": "Points tới PHP executable.",
-      "configuration.validate.run": "Whether the linter is run on save or on type.",
+      "configuration.suggest.basic": "Kiểm soát việc có bật gợi ý ngôn ngữ PHP tích hợp sẵn hay không. Tính năng này gợi ý các biến và biến toàn cục của PHP.",
+      "configuration.validate.enable": "Bật/tắt xác thực PHP tích hợp sẵn.",
+      "configuration.validate.executablePath": "Trỏ đến tệp thực thi PHP.",
+      "configuration.validate.run": "Chạy linter khi lưu hay khi gõ.",
       "configuration.title": "PHP",
       "commands.categroy.php": "PHP",
-      "command.untrustValidationExecutable": "Disallow PHP validation executable (defined as workspace setting)",
-      "displayName": "PHP Ngôn ngữ Tính năng",
-      "description": "Provides rich language support for PHP files.",
-      "workspaceTrust": "The extension requires workspace trust when the `php.validate.executablePath` setting will load a version of PHP in the workspace."
+      "command.untrustValidationExecutable": "Không cho phép tệp thực thi xác thực PHP (được định nghĩa trong cài đặt workspace)",
+      "displayName": "Tính năng ngôn ngữ PHP",
+      "description": "Cung cấp hỗ trợ ngôn ngữ phong phú cho các tệp PHP.",
+      "workspaceTrust": "Tiện ích yêu cầu độ tin cậy workspace khi cài đặt `php.validate.executablePath` sẽ tải một phiên bản PHP trong workspace."
     }
   }
 }

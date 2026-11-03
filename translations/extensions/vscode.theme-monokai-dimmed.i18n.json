@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Monokai Dimmed Chủ đề",
-      "description": "Monokai dimmed theme for Visual Studio Code",
+      "displayName": "Chủ đề Monokai Dimmed",
+      "description": "Chủ đề Monokai Dimmed cho Visual Studio Code",
       "themeLabel": "Monokai Dimmed"
     }
   }

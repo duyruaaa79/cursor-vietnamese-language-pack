@@ -9,13 +9,13 @@
   "contents": {
     "package": {
       "displayName": "GitHub",
-      "description": "GitHub Tính năng cho với Mã",
-      "command.publish": "Publish tới GitHub",
-      "command.openOnGitHub": "Mở Bật GitHub",
-      "config.branchProtection": "Controls whether to query repository rules for GitHub repositories",
-      "config.gitAuthentication": "Controls whether to enable automatic GitHub authentication for git commands within VS Code.",
-      "config.gitProtocol": "Controls which protocol is used to clone a GitHub repository",
-      "config.showAvatar": "Controls whether to show the GitHub avatar of the commit author in various hovers (ex: Git blame, Timeline, Source Control Graph, etc.)",
+      "description": "Các tính năng GitHub cho VS Code",
+      "command.publish": "Xuất bản lên GitHub",
+      "command.openOnGitHub": "Mở trên GitHub",
+      "config.branchProtection": "Kiểm soát việc có truy vấn quy tắc repository cho các GitHub repository hay không",
+      "config.gitAuthentication": "Kiểm soát việc có bật xác thực GitHub tự động cho các lệnh git trong VS Code hay không.",
+      "config.gitProtocol": "Kiểm soát giao thức được dùng để clone GitHub repository",
+      "config.showAvatar": "Kiểm soát việc có hiện ảnh đại diện GitHub của tác giả commit trong các hover khác nhau (ví dụ: Git blame, Dòng thời gian, Biểu đồ kiểm soát nguồn, v.v.) hay không",
       "welcome.publishFolder": {
         "message": "You can directly publish this folder to a GitHub repository. Once published, you'll have access to source control features powered by Git and GitHub.\n[$(github) Publish to GitHub](command:github.publish)",
         "comment": [

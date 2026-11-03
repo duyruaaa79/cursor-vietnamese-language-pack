@@ -8,9 +8,9 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "description": "Extension to add terminal completions for zsh, bash, and fish terminals.",
-      "displayName": "Terminal Suggest cho với Mã",
-      "view.name": "Terminal Suggest"
+      "description": "Tiện ích bổ sung gợi ý terminal cho các terminal zsh, bash và fish.",
+      "displayName": "Gợi ý terminal cho VS Code",
+      "view.name": "Gợi ý terminal"
     }
   }
 }

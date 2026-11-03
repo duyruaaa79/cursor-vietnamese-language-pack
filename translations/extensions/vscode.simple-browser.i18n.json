@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Simple Trình duyệt",
-      "description": "Compatibility shim that routes simple-browser commands to the Cursor Browser Editor."
+      "displayName": "Trình duyệt đơn giản",
+      "description": "Lớp tương thích chuyển các lệnh simple-browser sang Trình soạn thảo trình duyệt của Cursor."
     }
   }
 }

@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "HTML Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting, bracket matching & snippets in HTML files."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ HTML",
+      "description": "Cung cấp tô sáng cú pháp, khớp dấu ngoặc và snippet trong các tệp HTML."
     }
   }
 }

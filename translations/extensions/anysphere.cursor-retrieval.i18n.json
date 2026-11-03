@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "AI Gợi ý hoàn thành",
-      "description": "Get completions from a code language model."
+      "displayName": "Gợi ý AI",
+      "description": "Nhận gợi ý từ một mô hình ngôn ngữ cho mã."
     }
   }
 }

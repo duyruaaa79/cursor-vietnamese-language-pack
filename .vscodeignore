@@ -1,6 +1,7 @@
 .vscode/**
 .github/**
 scripts/**
+i18n/**
 tmp/**
 *.vsix
 .gitignore

@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Tiện ích Authoring",
-      "description": "Provides linting capabilities for authoring extensions."
+      "displayName": "Phát triển tiện ích",
+      "description": "Cung cấp khả năng lint khi phát triển tiện ích."
     }
   }
 }

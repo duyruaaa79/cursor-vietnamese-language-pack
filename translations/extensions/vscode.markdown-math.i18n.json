@@ -9,9 +9,9 @@
   "contents": {
     "package": {
       "displayName": "Markdown Math",
-      "description": "Adds math support to Markdown in notebooks.",
-      "config.markdown.math.enabled": "Enable/disable rendering math in the built-in Markdown preview.",
-      "config.markdown.math.macros": "A collection of custom macros. Each macro is a key-value pair where the key is a new command name and the value is the expansion of the macro."
+      "description": "Thêm hỗ trợ công thức toán cho Markdown trong notebook.",
+      "config.markdown.math.enabled": "Bật/tắt hiển thị công thức toán trong bản xem trước Markdown tích hợp.",
+      "config.markdown.math.macros": "Tập hợp các macro tùy chỉnh. Mỗi macro là một cặp khóa-giá trị, trong đó khóa là tên lệnh mới và giá trị là phần mở rộng của macro."
     }
   }
 }

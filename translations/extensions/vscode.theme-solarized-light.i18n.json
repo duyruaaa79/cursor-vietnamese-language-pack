@@ -8,9 +8,9 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Solarized Sáng Chủ đề",
-      "description": "Solarized light theme for Visual Studio Code",
-      "themeLabel": "Solarized Sáng"
+      "displayName": "Chủ đề Solarized Light",
+      "description": "Chủ đề Solarized Light cho Visual Studio Code",
+      "themeLabel": "Solarized Light"
     }
   }
 }

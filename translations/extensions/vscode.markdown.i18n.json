@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Markdown Ngôn ngữ Basics",
-      "description": "Provides snippets and syntax highlighting for Markdown."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ Markdown",
+      "description": "Cung cấp snippet và tô sáng cú pháp cho Markdown."
     }
   }
 }

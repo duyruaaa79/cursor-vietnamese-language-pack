@@ -8,17 +8,17 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": ".ipynb Support",
-      "description": "Provides basic support for opening and reading Jupyter's .ipynb notebook files",
-      "ipynb.pasteImagesAsAttachments.enabled": "Enable/disable pasting of images into Markdown cells in ipynb notebook files. Pasted images are inserted as attachments to the cell.",
-      "ipynb.experimental.serialization": "Experimental feature to serialize the Jupyter notebook in a worker thread.",
-      "newUntitledIpynb.title": "Mới Jupyter Notebook",
+      "displayName": "Hỗ trợ .ipynb",
+      "description": "Cung cấp hỗ trợ cơ bản để mở và đọc các tệp notebook .ipynb của Jupyter",
+      "ipynb.pasteImagesAsAttachments.enabled": "Bật/tắt dán hình ảnh vào ô Markdown trong các tệp notebook ipynb. Hình ảnh được dán sẽ được chèn dưới dạng tệp đính kèm của ô.",
+      "ipynb.experimental.serialization": "Tính năng thử nghiệm để tuần tự hóa notebook Jupyter trong một luồng worker.",
+      "newUntitledIpynb.title": "Notebook Jupyter mới",
       "newUntitledIpynb.shortTitle": "Jupyter Notebook",
-      "openIpynbInNotebookEditor.title": "Open IPYNB File In Notebook Editor",
-      "cleanInvalidImageAttachment.title": "Clean Invalid Ảnh Attachment Tham chiếu",
-      "copyCellOutput.title": "Sao chép Ô Đầu ra",
-      "addCellOutputToChat.title": "Thêm Ô Đầu ra tới Chat",
-      "openCellOutput.title": "Open Cell Output in Text Editor",
+      "openIpynbInNotebookEditor.title": "Mở tệp IPYNB trong trình soạn thảo notebook",
+      "cleanInvalidImageAttachment.title": "Dọn tham chiếu tệp đính kèm hình ảnh không hợp lệ",
+      "copyCellOutput.title": "Sao chép đầu ra của ô",
+      "addCellOutputToChat.title": "Thêm đầu ra của ô vào Chat",
+      "openCellOutput.title": "Mở đầu ra của ô trong trình soạn thảo văn bản",
       "markdownAttachmentRenderer.displayName": {
         "message": "Markdown-It ipynb Cell Attachment renderer",
         "comment": [

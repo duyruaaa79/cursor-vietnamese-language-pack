@@ -8,9 +8,9 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Node Gỡ lỗi Tự động-attach",
-      "description": "Helper for auto-attach feature when node-debug extensions are not active.",
-      "toggle.auto.attach": "Bật/tắt Tự động Attach"
+      "displayName": "Tự động đính kèm gỡ lỗi Node",
+      "description": "Trình hỗ trợ cho tính năng tự động đính kèm khi các tiện ích node-debug không hoạt động.",
+      "toggle.auto.attach": "Bật/tắt tự động đính kèm"
     }
   }
 }

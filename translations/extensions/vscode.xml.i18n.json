@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "XML Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting and bracket matching in XML files."
+      "displayName": "Cơ bản về ngôn ngữ XML",
+      "description": "Cung cấp tô sáng cú pháp và khớp dấu ngoặc trong các tệp XML."
     }
   }
 }

@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Seti Chủ đề icon tệp",
-      "description": "A file icon theme made out of the Seti UI file icons",
+      "displayName": "Chủ đề biểu tượng tệp Seti",
+      "description": "Chủ đề biểu tượng tệp được tạo từ bộ biểu tượng tệp Seti UI",
       "themeLabel": "Seti (Cursor)"
     }
   }

@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Cấu hình Editing",
-      "description": "Provides capabilities (advanced IntelliSense, auto-fixing) in configuration files like settings, launch, and extension recommendation files."
+      "displayName": "Chỉnh sửa cấu hình",
+      "description": "Cung cấp các tính năng (IntelliSense nâng cao, tự động sửa) trong các tệp cấu hình như tệp cài đặt, launch và đề xuất tiện ích."
     }
   }
 }

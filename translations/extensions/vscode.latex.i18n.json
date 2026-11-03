@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "LaTeX Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting and bracket matching for TeX, LaTeX and BibTeX."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ LaTeX",
+      "description": "Cung cấp tô sáng cú pháp và khớp dấu ngoặc cho TeX, LaTeX và BibTeX."
     }
   }
 }

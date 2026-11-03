@@ -9,7 +9,7 @@
   "contents": {
     "package": {
       "displayName": "Cursor Protocol Buffers",
-      "description": "Provides Protocol Buffers syntax highlighting and bracket matching in Cursor."
+      "description": "Cung cấp tô sáng cú pháp Protocol Buffers và khớp dấu ngoặc trong Cursor."
     }
   }
 }

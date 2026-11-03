@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Builtin Notebook Đầu ra Renderers",
-      "description": "Provides basic output renderers for notebooks"
+      "displayName": "Trình hiển thị đầu ra notebook tích hợp",
+      "description": "Cung cấp các trình hiển thị đầu ra cơ bản cho notebook"
     }
   }
 }

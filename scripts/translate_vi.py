@@ -6,7 +6,9 @@ Placeholders like {0}, {n}, $1 and && mnemonics are preserved.
 
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 
 from ui_phrases import UI_PHRASES
 
@@ -1056,9 +1058,21 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-z']+", text))
 
 
+def _load_exact() -> dict[str, str]:
+    path = Path(__file__).resolve().parents[1] / "i18n" / "vi.json"
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+EXACT = _load_exact()
+
+
 def translate(text: str) -> str:
     if text is None:
         return text
+    if text in EXACT:
+        return EXACT[text]
     if _keep_english(text):
         return text
 
@@ -1075,12 +1089,12 @@ def translate(text: str) -> str:
     key = re.sub(r"\s+", " ", work.strip().lower())
     if key in PHRASES:
         out = PHRASES[key]
-    elif _word_count(work) <= 5:
+    elif not EXACT and _word_count(work) <= 5:
         out = _apply_phrases(work)
         out = _apply_words(out)
     else:
-        # Long sentences stay English unless an exact phrase exists.
-        # Broken word-by-word Vietnamese is worse than mixed UI.
+        # Without a reviewed translation, English beats word-by-word Vietnamese
+        # with the wrong word order.
         return text
 
     def unstash(m: re.Match[str]) -> str:

@@ -8,19 +8,19 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Máy chủ Ready Thao tác",
-      "description": "Open URI in browser if server under debugging is ready.",
-      "debug.server.ready.serverReadyAction.description": "Act upon a URI when a server program under debugging is ready (indicated by sending output of the form 'listening on port 3000' or 'Now listening on: https://localhost:5001' to the debug console.)",
-      "debug.server.ready.action.description": "What to do with the URI when the server is ready.",
-      "debug.server.ready.action.openExternally.description": "Open URI externally with the default application.",
-      "debug.server.ready.action.debugWithChrome.description": "Start debugging with the 'Debugger for Chrome'.",
-      "debug.server.ready.action.startDebugging.description": "Chạy another launch cấu hình.",
-      "debug.server.ready.pattern.description": "Server is ready if this pattern appears on the debug console. The first capture group must include a URI or a port number.",
-      "debug.server.ready.debugConfig.description": "Gỡ lỗi cấu hình tới Chạy.",
-      "debug.server.ready.uriFormat.description": "A format string used when constructing the URI from a port number. The first '%s' is substituted with the port number.",
-      "debug.server.ready.webRoot.description": "Value passed to the debug configuration for the 'Debugger for Chrome'.",
-      "debug.server.ready.killOnServerStop.description": "Stop the child session when the parent session stopped.",
-      "debug.server.ready.debugConfigName.description": "Name of the launch configuration to run."
+      "displayName": "Thao tác khi máy chủ sẵn sàng",
+      "description": "Mở URI trong trình duyệt khi máy chủ đang gỡ lỗi đã sẵn sàng.",
+      "debug.server.ready.serverReadyAction.description": "Thực hiện thao tác với một URI khi chương trình máy chủ đang gỡ lỗi đã sẵn sàng (được báo hiệu bằng việc gửi đầu ra dạng 'listening on port 3000' hoặc 'Now listening on: https://localhost:5001' tới bảng điều khiển gỡ lỗi.)",
+      "debug.server.ready.action.description": "Việc cần làm với URI khi máy chủ sẵn sàng.",
+      "debug.server.ready.action.openExternally.description": "Mở URI bên ngoài bằng ứng dụng mặc định.",
+      "debug.server.ready.action.debugWithChrome.description": "Bắt đầu gỡ lỗi với 'Debugger for Chrome'.",
+      "debug.server.ready.action.startDebugging.description": "Chạy một cấu hình khởi chạy khác.",
+      "debug.server.ready.pattern.description": "Máy chủ được coi là sẵn sàng nếu mẫu này xuất hiện trên bảng điều khiển gỡ lỗi. Nhóm bắt đầu tiên phải chứa một URI hoặc số cổng.",
+      "debug.server.ready.debugConfig.description": "Cấu hình gỡ lỗi cần chạy.",
+      "debug.server.ready.uriFormat.description": "Chuỗi định dạng dùng khi tạo URI từ số cổng. '%s' đầu tiên sẽ được thay bằng số cổng.",
+      "debug.server.ready.webRoot.description": "Giá trị được truyền vào cấu hình gỡ lỗi cho 'Debugger for Chrome'.",
+      "debug.server.ready.killOnServerStop.description": "Dừng phiên con khi phiên cha đã dừng.",
+      "debug.server.ready.debugConfigName.description": "Tên của cấu hình khởi chạy cần chạy."
     }
   }
 }

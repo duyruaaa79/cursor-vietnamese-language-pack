@@ -8,9 +8,9 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Quiet Sáng Chủ đề",
-      "description": "Quiet light theme for Visual Studio Code",
-      "themeLabel": "Quiet Sáng"
+      "displayName": "Chủ đề Quiet Light",
+      "description": "Chủ đề Quiet Light cho Visual Studio Code",
+      "themeLabel": "Quiet Light"
     }
   }
 }

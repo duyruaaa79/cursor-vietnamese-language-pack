@@ -8,9 +8,9 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Kimbie Tối Chủ đề",
-      "description": "Kimbie dark theme for Visual Studio Code",
-      "themeLabel": "Kimbie Tối"
+      "displayName": "Chủ đề Kimbie Dark",
+      "description": "Chủ đề Kimbie Dark cho Visual Studio Code",
+      "themeLabel": "Kimbie Dark"
     }
   }
 }

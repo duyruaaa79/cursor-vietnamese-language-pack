@@ -8,10 +8,10 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "GitHub Authentication",
-      "description": "GitHub Authentication Provider",
-      "config.github-enterprise.title": "GHE.com & GitHub Enterprise Server Authentication",
-      "config.github-enterprise.uri.description": "The URI for your GHE.com or GitHub Enterprise Server instance.\n\nExamples:\n* GHE.com: `https://octocat.ghe.com`\n* GitHub Enterprise Server: `https://github.octocat.com`\n\n> **Note:** This should _not_ be set to a GitHub.com URI. If your account exists on GitHub.com or is a GitHub Enterprise Managed User, you do not need any additional configuration and can simply log in to GitHub."
+      "displayName": "Xác thực GitHub",
+      "description": "Trình cung cấp xác thực GitHub",
+      "config.github-enterprise.title": "Xác thực GHE.com & GitHub Enterprise Server",
+      "config.github-enterprise.uri.description": "URI của phiên bản GHE.com hoặc GitHub Enterprise Server của bạn.\n\nVí dụ:\n* GHE.com: `https://octocat.ghe.com`\n* GitHub Enterprise Server: `https://github.octocat.com`\n\n> **Lưu ý:** _Không_ đặt giá trị này thành URI của GitHub.com. Nếu tài khoản của bạn ở trên GitHub.com hoặc là GitHub Enterprise Managed User, bạn không cần cấu hình thêm và chỉ cần đăng nhập vào GitHub."
     }
   }
 }

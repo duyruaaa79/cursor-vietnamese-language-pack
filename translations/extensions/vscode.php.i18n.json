@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "PHP Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting and bracket matching for PHP files."
+      "displayName": "Cơ bản về ngôn ngữ PHP",
+      "description": "Cung cấp tô sáng cú pháp và khớp dấu ngoặc cho các tệp PHP."
     }
   }
 }

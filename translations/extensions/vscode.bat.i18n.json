@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Cửa sổ Bat Ngôn ngữ Basics",
-      "description": "Provides snippets, syntax highlighting, bracket matching and folding in Windows batch files."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ Windows Bat",
+      "description": "Cung cấp snippet, tô sáng cú pháp, khớp dấu ngoặc và thu gọn trong các tệp batch của Windows."
     }
   }
 }

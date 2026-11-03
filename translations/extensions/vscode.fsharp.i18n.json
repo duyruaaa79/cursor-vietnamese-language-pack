@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "F# Ngôn ngữ Basics",
-      "description": "Provides snippets, syntax highlighting, bracket matching and folding in F# files."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ F#",
+      "description": "Cung cấp snippet, tô sáng cú pháp, khớp dấu ngoặc và thu gọn trong các tệp F#."
     }
   }
 }

@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Perl Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting and bracket matching in Perl files."
+      "displayName": "Cơ bản về ngôn ngữ Perl",
+      "description": "Cung cấp tô sáng cú pháp và khớp dấu ngoặc trong các tệp Perl."
     }
   }
 }

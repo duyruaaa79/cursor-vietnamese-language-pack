@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Cursor Luôn luôn Cục bộ",
-      "description": "Experimentation @ Cursor.sh"
+      "displayName": "Cursor Always Local",
+      "description": "Thử nghiệm @ cursor.sh"
     }
   }
 }

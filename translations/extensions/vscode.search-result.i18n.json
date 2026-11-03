@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Tìm kiếm Result",
-      "description": "Provides syntax highlighting and language features for tabbed search results."
+      "displayName": "Kết quả tìm kiếm",
+      "description": "Cung cấp tô sáng cú pháp và tính năng ngôn ngữ cho kết quả tìm kiếm dạng tab."
     }
   }
 }

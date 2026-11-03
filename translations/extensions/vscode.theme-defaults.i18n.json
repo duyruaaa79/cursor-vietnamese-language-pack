@@ -8,16 +8,16 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Mặc định Chủ đề",
-      "description": "The default Visual Studio light and dark themes",
-      "darkPlusColorThemeLabel": "Tối+",
-      "darkModernThemeLabel": "Tối Modern",
-      "lightPlusColorThemeLabel": "Sáng+",
-      "lightModernThemeLabel": "Sáng Modern",
-      "darkColorThemeLabel": "Tối (Visual Studio)",
-      "lightColorThemeLabel": "Sáng (Visual Studio)",
-      "hcColorThemeLabel": "Tối Tương phản cao",
-      "lightHcColorThemeLabel": "Sáng Tương phản cao",
+      "displayName": "Chủ đề mặc định",
+      "description": "Các chủ đề sáng và tối mặc định của Visual Studio",
+      "darkPlusColorThemeLabel": "Dark+",
+      "darkModernThemeLabel": "Dark Modern",
+      "lightPlusColorThemeLabel": "Light+",
+      "lightModernThemeLabel": "Light Modern",
+      "darkColorThemeLabel": "Dark (Visual Studio)",
+      "lightColorThemeLabel": "Light (Visual Studio)",
+      "hcColorThemeLabel": "Dark High Contrast",
+      "lightHcColorThemeLabel": "Light High Contrast",
       "minimalIconThemeLabel": "Minimal (Cursor)"
     }
   }

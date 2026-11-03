@@ -128,7 +128,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
         },
         "repository": {
             "type": "git",
-            "url": "https://github.com/duy/cursor-vietnamese-language-pack",
+            "url": "https://github.com/duyruaaa79/cursor-vietnamese-language-pack",
         },
     }
     with (ROOT / "package.json").open("w", encoding="utf-8") as f:

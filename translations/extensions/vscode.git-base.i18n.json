@@ -9,8 +9,8 @@
   "contents": {
     "package": {
       "displayName": "Git Base",
-      "description": "Git static contributions và pickers.",
-      "command.api.getRemoteSources": "Get Từ xa Sources"
+      "description": "Các đóng góp tĩnh và bộ chọn của Git.",
+      "command.api.getRemoteSources": "Lấy nguồn remote"
     }
   }
 }

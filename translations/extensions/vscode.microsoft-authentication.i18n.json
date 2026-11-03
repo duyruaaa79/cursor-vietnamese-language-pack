@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Microsoft Tài khoản",
-      "description": "Microsoft authentication provider",
+      "displayName": "Tài khoản Microsoft",
+      "description": "Nhà cung cấp xác thực Microsoft",
       "signIn": "Đăng nhập",
       "signOut": "Đăng xuất",
       "microsoft-authentication.implementation.description": {
@@ -19,8 +19,8 @@
           "The `command:` syntax will turn into a link. Do not translate it."
         ]
       },
-      "microsoft-authentication.implementation.enumDescriptions.msal": "Use the Microsoft Authentication Library (MSAL) to sign in with a Microsoft account.",
-      "microsoft-authentication.implementation.enumDescriptions.classic": "(deprecated) Use the classic authentication flow to sign in with a Microsoft account.",
+      "microsoft-authentication.implementation.enumDescriptions.msal": "Dùng Microsoft Authentication Library (MSAL) để đăng nhập bằng tài khoản Microsoft.",
+      "microsoft-authentication.implementation.enumDescriptions.classic": "(đã ngừng dùng) Dùng luồng xác thực cổ điển để đăng nhập bằng tài khoản Microsoft.",
       "microsoft-sovereign-cloud.environment.description": {
         "message": "The Sovereign Cloud to use for authentication. If you select `custom`, you must also set the `#microsoft-sovereign-cloud.customEnvironment#` setting.",
         "comment": [
@@ -28,9 +28,9 @@
           "The `#microsoft-sovereign-cloud.customEnvironment#` syntax will turn into a link. Do not translate it."
         ]
       },
-      "microsoft-sovereign-cloud.environment.enumDescriptions.AzureChinaCloud": "Azure China",
-      "microsoft-sovereign-cloud.environment.enumDescriptions.AzureUSGovernment": "Azure US Government",
-      "microsoft-sovereign-cloud.environment.enumDescriptions.custom": "Tùy chỉnh Microsoft Sovereign Cloud",
+      "microsoft-sovereign-cloud.environment.enumDescriptions.AzureChinaCloud": "Azure Trung Quốc",
+      "microsoft-sovereign-cloud.environment.enumDescriptions.AzureUSGovernment": "Azure Chính phủ Hoa Kỳ",
+      "microsoft-sovereign-cloud.environment.enumDescriptions.custom": "Microsoft Sovereign Cloud tùy chỉnh",
       "microsoft-sovereign-cloud.customEnvironment.description": {
         "message": "The custom configuration for the Sovereign Cloud to use with the Microsoft Sovereign Cloud authentication provider. This along with setting `#microsoft-sovereign-cloud.environment#` to `custom` is required to use this feature.",
         "comment": [
@@ -38,12 +38,12 @@
           "The `#microsoft-sovereign-cloud.environment#` syntax will turn into a link. Do not translate it."
         ]
       },
-      "microsoft-sovereign-cloud.customEnvironment.name.description": "The name of the custom Sovereign Cloud.",
-      "microsoft-sovereign-cloud.customEnvironment.portalUrl.description": "The portal URL for the custom Sovereign Cloud.",
-      "microsoft-sovereign-cloud.customEnvironment.managementEndpointUrl.description": "The management endpoint for the custom Sovereign Cloud.",
-      "microsoft-sovereign-cloud.customEnvironment.resourceManagerEndpointUrl.description": "The resource manager endpoint for the custom Sovereign Cloud.",
-      "microsoft-sovereign-cloud.customEnvironment.activeDirectoryEndpointUrl.description": "The Active Directory endpoint for the custom Sovereign Cloud.",
-      "microsoft-sovereign-cloud.customEnvironment.activeDirectoryResourceId.description": "The Active Directory resource ID for the custom Sovereign Cloud."
+      "microsoft-sovereign-cloud.customEnvironment.name.description": "Tên của Sovereign Cloud tùy chỉnh.",
+      "microsoft-sovereign-cloud.customEnvironment.portalUrl.description": "URL cổng thông tin của Sovereign Cloud tùy chỉnh.",
+      "microsoft-sovereign-cloud.customEnvironment.managementEndpointUrl.description": "Endpoint quản lý của Sovereign Cloud tùy chỉnh.",
+      "microsoft-sovereign-cloud.customEnvironment.resourceManagerEndpointUrl.description": "Endpoint trình quản lý tài nguyên của Sovereign Cloud tùy chỉnh.",
+      "microsoft-sovereign-cloud.customEnvironment.activeDirectoryEndpointUrl.description": "Endpoint Active Directory của Sovereign Cloud tùy chỉnh.",
+      "microsoft-sovereign-cloud.customEnvironment.activeDirectoryResourceId.description": "ID tài nguyên Active Directory của Sovereign Cloud tùy chỉnh."
     }
   }
 }

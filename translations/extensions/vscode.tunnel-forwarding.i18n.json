@@ -8,11 +8,11 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Cục bộ Tunnel Cổng Forwarding",
-      "description": "Allows forwarding local ports to be accessible over the internet.",
-      "category": "Cổng Forwarding",
-      "command.showLog": "Hiện Nhật ký",
-      "command.restart": "Khởi động lại Forwarding Hệ thống"
+      "displayName": "Chuyển tiếp cổng qua tunnel cục bộ",
+      "description": "Cho phép chuyển tiếp các cổng cục bộ để truy cập qua Internet.",
+      "category": "Chuyển tiếp cổng",
+      "command.showLog": "Hiện nhật ký",
+      "command.restart": "Khởi động lại hệ thống chuyển tiếp"
     }
   }
 }

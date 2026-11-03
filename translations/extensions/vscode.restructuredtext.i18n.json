@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "reStructuredText Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting in reStructuredText files."
+      "displayName": "Cơ bản về ngôn ngữ reStructuredText",
+      "description": "Cung cấp tô sáng cú pháp trong các tệp reStructuredText."
     }
   }
 }

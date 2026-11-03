@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Ít hơn Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting, bracket matching and folding in Less files."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ Less",
+      "description": "Cung cấp tô sáng cú pháp, khớp dấu ngoặc và thu gọn trong các tệp Less."
     }
   }
 }

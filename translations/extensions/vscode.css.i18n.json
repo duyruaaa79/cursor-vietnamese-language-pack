@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "CSS Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting and bracket matching for CSS, LESS and SCSS files."
+      "displayName": "Hỗ trợ cơ bản ngôn ngữ CSS",
+      "description": "Cung cấp tô sáng cú pháp và khớp dấu ngoặc cho các tệp CSS, LESS và SCSS."
     }
   }
 }

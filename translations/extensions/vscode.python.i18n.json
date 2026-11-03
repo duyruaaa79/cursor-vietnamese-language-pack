@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Python Ngôn ngữ Basics",
-      "description": "Provides syntax highlighting, bracket matching and folding in Python files."
+      "displayName": "Cơ bản về ngôn ngữ Python",
+      "description": "Cung cấp tô sáng cú pháp, khớp dấu ngoặc và thu gọn trong các tệp Python."
     }
   }
 }

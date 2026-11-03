@@ -8,11 +8,11 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "description": "Extension to add Gulp capabilities to VSCode.",
-      "displayName": "Gulp support cho VSCode",
-      "config.gulp.autoDetect": "Controls enablement of Gulp task detection. Gulp task detection can cause files in any open workspace to be executed.",
-      "gulp.taskDefinition.type.description": "Gulp tác vụ tới customize.",
-      "gulp.taskDefinition.file.description": "The Gulp file that provides the task. Can be omitted."
+      "description": "Tiện ích bổ sung khả năng Gulp cho VSCode.",
+      "displayName": "Hỗ trợ Gulp cho VSCode",
+      "config.gulp.autoDetect": "Kiểm soát việc bật phát hiện tác vụ Gulp. Việc phát hiện tác vụ Gulp có thể khiến các tệp trong bất kỳ workspace đang mở nào bị thực thi.",
+      "gulp.taskDefinition.type.description": "Tác vụ Gulp cần tùy chỉnh.",
+      "gulp.taskDefinition.file.description": "Tệp Gulp cung cấp tác vụ. Có thể bỏ qua."
     }
   }
 }

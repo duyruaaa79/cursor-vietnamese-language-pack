@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "contents": {
     "package": {
-      "displayName": "Abyss Chủ đề",
-      "description": "Abyss theme for Visual Studio Code",
+      "displayName": "Chủ đề Abyss",
+      "description": "Chủ đề Abyss cho Visual Studio Code",
       "themeLabel": "Abyss"
     }
   }

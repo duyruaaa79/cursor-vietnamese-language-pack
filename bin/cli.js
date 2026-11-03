@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-// Usage: node bin/cli.js <apply|restore|status|extract> [--app <Cursor app root>]
+// Usage: node bin/cli.js <apply|restore|status|extract> [--app <Cursor app root>] [--force-unsafe]
 
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +19,7 @@ function main() {
 	switch (command) {
 		case 'apply': {
 			const dict = dictionary.load(ROOT, patcher.stateDir());
-			const result = patcher.apply({ appRoot, dict, log: m => console.log(m) });
+			const result = patcher.apply({ appRoot, dict, log: m => console.log(m), force: args.includes('--force-unsafe') });
 			console.log(JSON.stringify(result, null, 2));
 			break;
 		}

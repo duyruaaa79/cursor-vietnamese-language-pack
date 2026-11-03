@@ -3,9 +3,11 @@
 Gói ngôn ngữ **Tiếng Việt** cho [Cursor](https://cursor.com). Extension này Việt hóa:
 
 - giao diện lõi (menu, Explorer, Settings, Git, Command Palette) qua catalog NLS của ứng dụng;
-- giao diện riêng của Cursor không đi qua NLS (Cursor Settings, Agents Window, chat, Automations, thanh toán, thông báo) bằng cách vá chuỗi hiển thị trong các bundle `workbench.*.js`.
+- giao diện riêng của Cursor không đi qua NLS (Cursor Settings, Agents Window, chat, Automations, thanh toán, thông báo) bằng cách vá chuỗi hiển thị trong các bundle `workbench.*.js` — **chỉ trên Windows/Linux**.
 
 Sau mỗi lần Cursor cập nhật, extension tự Việt hóa lại khi Cursor khởi động và nhắc bạn mở lại Cursor một lần.
+
+> **macOS:** macOS kiểm tra chữ ký số của toàn bộ `Cursor.app` (kể cả file JS) và giết tiến trình ngay khi mở nếu có file bị sửa (`amfid`: “The signature on the file is invalid”). Vì vậy trên macOS extension **không bao giờ sửa `Cursor.app`**, chỉ dùng language pack; nếu phát hiện file đã bị bản cũ vá, extension tự khôi phục bản gốc. Nếu Cursor không mở được, chạy `~/.cursor-vietnamese/Khoi-phuc-Cursor.command`.
 
 ## Cài vào Cursor
 
@@ -36,7 +38,7 @@ Lệnh trong Command Palette:
 
 Cài đặt: `cursorVietnamese.autoPatch`, `cursorVietnamese.autoUpdateDictionary` (mặc định bật).
 
-Dòng lệnh: `node bin/cli.js <apply|restore|status|extract|sync-langpack>`.
+Dòng lệnh: `node bin/cli.js <apply|restore|status|extract|sync-langpack>`. Trên macOS, `apply` từ chối vá trừ khi thêm `--force-unsafe` (chỉ dùng cho bản sao thử nghiệm).
 
 ## Giới hạn
 

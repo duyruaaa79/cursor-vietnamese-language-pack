@@ -77,7 +77,13 @@ async function runAutomatic(context) {
 				log(`dictionary update skipped: ${err.message}`);
 			}
 		}
-		if (config().get('autoPatch', true) && localize(context)) {
+		if (patcher.bundlePatchingBlocked() && patcher.status({ appRoot: vscode.env.appRoot }).some(s => s.patched)) {
+			const restored = patcher.restore({ appRoot: vscode.env.appRoot });
+			log(`restored files patched by an older version: ${restored.join(', ')}`);
+		}
+		if (patcher.isDisabled()) {
+			log('auto patch disabled by the rescue script; run "Việt hóa giao diện Cursor" to enable again');
+		} else if (config().get('autoPatch', true) && localize(context)) {
 			await promptRestart();
 		}
 	} catch (err) {
@@ -92,8 +98,11 @@ function activate(context) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('cursorVietnamese.apply', async () => {
 			try {
+				fs.rmSync(path.join(patcher.stateDir(), 'disabled'), { force: true });
 				if (localize(context)) {
 					await promptRestart();
+				} else if (patcher.bundlePatchingBlocked()) {
+					vscode.window.showInformationMessage('Gói ngôn ngữ tiếng Việt đã cập nhật. Trên macOS, phần chữ viết cứng trong Cursor không thể Việt hóa vì sửa Cursor.app sẽ khiến macOS chặn ứng dụng.');
 				} else {
 					vscode.window.showInformationMessage('Giao diện Cursor đã được Việt hóa với bản dịch mới nhất.');
 				}

@@ -119,7 +119,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
         "name": "cursor-vietnamese-language-pack",
         "displayName": "Vietnamese Language Pack for Cursor",
         "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
-        "version": "0.3.0",
+        "version": "0.3.1",
         "publisher": "duy",
         "license": "MIT",
         "engines": {"vscode": "^1.80.0"},
@@ -144,7 +144,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
                     "cursorVietnamese.autoPatch": {
                         "type": "boolean",
                         "default": True,
-                        "description": "Tự Việt hóa giao diện riêng của Cursor (Cursor Settings, Agents Window, chat) khi khởi động, kể cả sau khi Cursor cập nhật.",
+                        "description": "Tự Việt hóa giao diện riêng của Cursor (Cursor Settings, Agents Window, chat) khi khởi động, kể cả sau khi Cursor cập nhật. Không áp dụng trên macOS (macOS chặn Cursor.app bị sửa).",
                     },
                     "cursorVietnamese.autoUpdateDictionary": {
                         "type": "boolean",

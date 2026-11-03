@@ -5405,13 +5405,13 @@
       "agents.chatHistory.noResults.empty": "Tạo Agent mới để thấy ở đây",
       "agents.chatHistory.noResults.aria": "Không có chat",
       "agents.chatHistory.composerAria": "Chat {0}",
-      "agents.chatHistory.backgroundAria": "Cloud agent {0}",
+      "agents.chatHistory.backgroundAria": "Agent đám mây {0}",
       "agents.chatHistory.untitledChat": "Chat chưa đặt tên",
       "agents.chatHistory.placeholder": "Tìm chat và Agent cloud",
       "agents.chatHistory.help": "Tìm lịch sử chat",
       "agents.mru.noResults": "Không có Agent gần đây",
       "agents.mru.composerAria": "Agent {0}",
-      "agents.mru.backgroundAria": "Cloud agent {0}",
+      "agents.mru.backgroundAria": "Agent đám mây {0}",
       "agents.ctrlTab.draft": "Nháp",
       "agents.mru.placeholder": "Chuyển đổi giữa các Agent dùng gần đây",
       "agents.mru.help": "Chuyển đổi giữa các Agent dùng gần đây"
@@ -5757,7 +5757,7 @@
       "toggleColumnSelection": "Bật/tắt chế độ chọn theo cột"
     },
     "vs/workbench/contrib/codeEditor/browser/toggleMinimap": {
-      "miMinimap": "&&Minimap",
+      "miMinimap": "&&Bản đồ thu nhỏ",
       "toggleMinimap": "Bật/tắt minimap"
     },
     "vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier": {
@@ -7271,7 +7271,7 @@
       "disablePreRleaseLabel": "Chuyển sang bản chính thức",
       "install": "Cài đặt",
       "extensionInfoName": "Tên: {0}",
-      "extensionInfoId": "Id: {0}",
+      "extensionInfoId": "ID: {0}",
       "extensionInfoDescription": "Mô tả: {0}",
       "extensionInfoVersion": "Phiên bản: {0}",
       "extensionInfoPublisher": "Nhà phát hành: {0}",
@@ -8239,7 +8239,7 @@
     "vs/workbench/contrib/files/browser/files.view.contribution": {
       "explorerViewIcon": "Biểu tượng của khung xem Explorer.",
       "openEditorsIcon": "Biểu tượng của khung xem Trình soạn thảo đang mở.",
-      "miViewExplorer": "&&Explorer",
+      "miViewExplorer": "&&Trình khám phá",
       "openFolder": "Mở thư mục",
       "addAFolder": "thêm thư mục",
       "openRecent": "Mở gần đây",

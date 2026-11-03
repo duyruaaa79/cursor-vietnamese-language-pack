@@ -473,6 +473,34 @@ function defaultAppRoot() {
 	return '/usr/share/cursor/resources/app';
 }
 
+// A double-clickable script that restores the original bundles without needing Cursor to start.
+function writeRescueScript(appRoot) {
+	if (process.platform !== 'darwin') {
+		return;
+	}
+	const files = [...TARGET_FILES, 'product.json'].map(rel => `"${rel}"`).join(' ');
+	const script = `#!/bin/bash
+# Khôi phục giao diện gốc của Cursor và tắt tự Việt hóa giao diện.
+APP="${appRoot}"
+STATE="$HOME/.cursor-vietnamese"
+COMMIT=$(sed -n 's/.*"commit"[^"]*"\\([0-9a-f]*\\)".*/\\1/p' "$APP/product.json" | head -1)
+BACKUP="$STATE/backup/$COMMIT"
+touch "$STATE/disabled"
+for rel in ${files}; do
+	if [ "$rel" = "product.json" ]; then target="$APP/product.json"; else target="$APP/out/$rel"; fi
+	if [ -f "$BACKUP/$rel" ]; then cp "$BACKUP/$rel" "$target" && echo "Đã khôi phục $rel"; fi
+done
+echo "Xong. Mở lại Cursor."
+`;
+	const file = path.join(stateDir(), 'Khoi-phuc-Cursor.command');
+	fs.mkdirSync(stateDir(), { recursive: true });
+	fs.writeFileSync(file, script, { mode: 0o755 });
+}
+
+function isDisabled() {
+	return fs.existsSync(path.join(stateDir(), 'disabled'));
+}
+
 function marker(signature) {
 	return `\n/*cursor-vi:${signature}*/\n`;
 }
@@ -482,9 +510,19 @@ function readMarker(text) {
 	return m ? m[1] : undefined;
 }
 
+// macOS validates the code signature of the whole Cursor.app (resources included) and
+// SIGKILLs it at launch once any bundled file is modified, so patching is unsafe there.
+function bundlePatchingBlocked() {
+	return process.platform === 'darwin';
+}
+
 // Applies the patch for the installed Cursor. Safe to call repeatedly: files already
 // patched with the same dictionary are left alone.
-function apply({ appRoot = defaultAppRoot(), dict, log = () => { } }) {
+function apply({ appRoot = defaultAppRoot(), dict, log = () => { }, force = false }) {
+	if (bundlePatchingBlocked() && !force) {
+		log('bundle patching skipped: macOS kills Cursor when files inside Cursor.app are modified');
+		return { changed: false, results: [], blocked: true };
+	}
 	const productPath = path.join(appRoot, 'product.json');
 	const product = JSON.parse(fs.readFileSync(productPath, 'utf8'));
 	const commit = product.commit || 'unknown';
@@ -492,6 +530,7 @@ function apply({ appRoot = defaultAppRoot(), dict, log = () => { } }) {
 	const backupRoot = path.join(stateDir(), 'backup', commit);
 	const results = [];
 	let changed = false;
+	writeRescueScript(appRoot);
 
 	for (const rel of TARGET_FILES) {
 		const file = path.join(appRoot, 'out', rel);
@@ -587,4 +626,4 @@ function extract({ appRoot = defaultAppRoot() } = {}) {
 	return [...seen];
 }
 
-module.exports = { apply, restore, status, extract, patchSource, findCandidates, scan, classify, defaultAppRoot, stateDir, TARGET_FILES };
+module.exports = { apply, restore, status, extract, patchSource, findCandidates, scan, classify, isDisabled, bundlePatchingBlocked, defaultAppRoot, stateDir, TARGET_FILES };

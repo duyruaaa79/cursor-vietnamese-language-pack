@@ -119,14 +119,14 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
         "name": "cursor-vietnamese-language-pack",
         "displayName": "Vietnamese Language Pack for Cursor",
         "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
-        "version": "0.4.1",
+        "version": "0.5.0",
         "publisher": "duy",
         "license": "MIT",
         "engines": {"vscode": "^1.80.0"},
         "icon": "icon.png",
         "categories": ["Language Packs"],
         "main": "./src/extension.js",
-        "activationEvents": ["*"],
+        "activationEvents": ["onStartupFinished"],
         "keywords": ["vietnamese", "tiếng việt", "language pack", "i18n", "l10n", "cursor"],
         "scripts": {
             "build": "python3 scripts/build.py",
@@ -136,7 +136,6 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
             "commands": [
                 {"command": "cursorVietnamese.apply", "title": "Việt hóa giao diện Cursor", "category": "Tiếng Việt"},
                 {"command": "cursorVietnamese.restore", "title": "Khôi phục giao diện gốc của Cursor", "category": "Tiếng Việt"},
-                {"command": "cursorVietnamese.relaunch", "title": "Khởi động lại Cursor để Việt hóa đầy đủ", "category": "Tiếng Việt"},
                 {"command": "cursorVietnamese.status", "title": "Xem trạng thái Việt hóa", "category": "Tiếng Việt"},
             ],
             "configuration": {
@@ -155,7 +154,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
                     "cursorVietnamese.runtimeTranslate": {
                         "type": "boolean",
                         "default": True,
-                        "description": "macOS: Việt hóa giao diện riêng của Cursor ngay khi chạy, không sửa Cursor.app. Nếu Cursor được mở theo cách thường, extension tự khởi động lại Cursor một lần với cổng DevTools ngẫu nhiên chỉ trên 127.0.0.1.",
+                        "description": "macOS: Việt hóa giao diện riêng của Cursor (Cursor Settings, Agents, chat) ngay khi Cursor mở, không sửa Cursor.app và không khởi động lại. Một tác vụ nền (LaunchAgent) gửi tín hiệu SIGUSR1 để Cursor mở cổng gỡ lỗi Node trên 127.0.0.1 trong chưa tới một giây, cài bộ dịch rồi đóng cổng.",
                     },
                 },
             },

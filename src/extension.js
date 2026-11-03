@@ -6,7 +6,7 @@ const path = require('path');
 const patcher = require('./patcher');
 const langpack = require('./langpack');
 const dictionary = require('./dictionary');
-const runtime = require('./runtime');
+const agent = require('./agent');
 
 let output;
 
@@ -69,16 +69,6 @@ function reportError(err) {
 
 async function runAutomatic(context) {
 	try {
-		if (patcher.bundlePatchingBlocked()) {
-			if (patcher.status({ appRoot: vscode.env.appRoot }).some(s => s.patched)) {
-				const restored = patcher.restore({ appRoot: vscode.env.appRoot });
-				log(`restored files patched by an older version: ${restored.join(', ')}`);
-			}
-			runtime.removeLegacyLauncher();
-			if (await startRuntime(context) === 'relaunching') {
-				return;
-			}
-		}
 		if (config().get('autoUpdateDictionary', true)) {
 			try {
 				if (await dictionary.refresh(patcher.stateDir())) {
@@ -89,6 +79,12 @@ async function runAutomatic(context) {
 			}
 		}
 		if (patcher.bundlePatchingBlocked()) {
+			if (patcher.status({ appRoot: vscode.env.appRoot }).some(s => s.patched)) {
+				const restored = patcher.restore({ appRoot: vscode.env.appRoot });
+				log(`restored files patched by an older version: ${restored.join(', ')}`);
+			}
+			removeLegacyRelaunchFiles();
+			await translateRunning(context);
 			if (localize(context)) {
 				await promptRestart();
 			}
@@ -102,34 +98,25 @@ async function runAutomatic(context) {
 	}
 }
 
-function relaunchFull() {
-	return runtime.relaunch({
-		appRoot: vscode.env.appRoot,
-		mainPid: process.ppid,
-		quit: () => vscode.commands.executeCommand('workbench.action.quit'),
-	});
+// Versions 0.4.0 and 0.4.1 used a launcher app and relaunched Cursor; clean their leftovers.
+function removeLegacyRelaunchFiles() {
+	fs.rmSync(path.join(require('os').homedir(), 'Applications', 'Cursor Tiếng Việt.app'), { recursive: true, force: true });
+	for (const name of fs.existsSync(patcher.stateDir()) ? fs.readdirSync(patcher.stateDir()) : []) {
+		if (/^relaunch-/.test(name)) {
+			fs.rmSync(path.join(patcher.stateDir(), name), { force: true });
+		}
+	}
 }
 
-// macOS only: translates Cursor's own UI in the running windows. When Cursor was opened
-// without the DevTools flag, restarts it once with the flag (automatic unless `manual`).
-// Returns 'connected', 'relaunching' or 'off'.
-async function startRuntime(context, { manual = false } = {}) {
+// macOS: keeps the background job installed and translates this running Cursor right away.
+async function translateRunning(context) {
 	if (!config().get('runtimeTranslate', true)) {
-		return 'off';
+		agent.uninstall();
+		return [];
 	}
-	const dict = dictionary.load(context.extensionPath, patcher.stateDir());
-	const cdp = await runtime.start({ userDataDir: userDataDir(context), dict, log });
-	if (cdp) {
-		log('runtime translator connected');
-		context.subscriptions.push({ dispose: () => cdp.close() });
-		return 'connected';
-	}
-	if (manual || runtime.claimRelaunch(patcher.stateDir(), process.ppid)) {
-		log('restarting Cursor with the DevTools flag');
-		await relaunchFull();
-		return 'relaunching';
-	}
-	return 'off';
+	const appRoot = vscode.env.appRoot;
+	agent.install({ appRoot, dict: dictionary.load(context.extensionPath, patcher.stateDir()) });
+	return agent.run({ executable: agent.executableOf(appRoot), pids: [process.ppid], delay: 0, log });
 }
 
 function activate(context) {
@@ -141,12 +128,9 @@ function activate(context) {
 			try {
 				fs.rmSync(path.join(patcher.stateDir(), 'disabled'), { force: true });
 				if (patcher.bundlePatchingBlocked()) {
-					const restart = localize(context);
 					await config().update('runtimeTranslate', true, vscode.ConfigurationTarget.Global);
-					if (await startRuntime(context, { manual: true }) !== 'connected') {
-						return;
-					}
-					if (restart) {
+					await translateRunning(context);
+					if (localize(context)) {
 						await promptRestart();
 					} else {
 						vscode.window.showInformationMessage('Giao diện Cursor đã được Việt hóa với bản dịch mới nhất.');
@@ -172,7 +156,6 @@ function activate(context) {
 				reportError(err);
 			}
 		}),
-		vscode.commands.registerCommand('cursorVietnamese.relaunch', () => relaunchFull()),
 		vscode.commands.registerCommand('cursorVietnamese.status', () => {
 			const lines = patcher.status({ appRoot: vscode.env.appRoot })
 				.map(s => `${s.file}: ${s.missing ? 'không có' : s.patched ? 'đã Việt hóa' : 'chưa Việt hóa'}`);

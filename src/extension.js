@@ -6,6 +6,7 @@ const path = require('path');
 const patcher = require('./patcher');
 const langpack = require('./langpack');
 const dictionary = require('./dictionary');
+const runtime = require('./runtime');
 
 let output;
 
@@ -81,7 +82,12 @@ async function runAutomatic(context) {
 			const restored = patcher.restore({ appRoot: vscode.env.appRoot });
 			log(`restored files patched by an older version: ${restored.join(', ')}`);
 		}
-		if (patcher.isDisabled()) {
+		if (patcher.bundlePatchingBlocked()) {
+			if (localize(context)) {
+				await promptRestart();
+			}
+			await startRuntime(context);
+		} else if (patcher.isDisabled()) {
 			log('auto patch disabled by the rescue script; run "Việt hóa giao diện Cursor" to enable again');
 		} else if (config().get('autoPatch', true) && localize(context)) {
 			await promptRestart();
@@ -89,6 +95,51 @@ async function runAutomatic(context) {
 	} catch (err) {
 		reportError(err);
 	}
+}
+
+function relaunchFull() {
+	return runtime.relaunch({
+		appRoot: vscode.env.appRoot,
+		mainPid: process.ppid,
+		quit: () => vscode.commands.executeCommand('workbench.action.quit'),
+	});
+}
+
+// macOS only: translates Cursor's own UI in the running windows. Returns true when connected.
+async function startRuntime(context, { prompt = true } = {}) {
+	if (!config().get('runtimeTranslate', true)) {
+		return false;
+	}
+	try {
+		runtime.ensureLauncherApp(vscode.env.appRoot);
+	} catch (err) {
+		log(`launcher app not created: ${err.message}`);
+	}
+	const dict = dictionary.load(context.extensionPath, patcher.stateDir());
+	const cdp = await runtime.start({ userDataDir: userDataDir(context), dict, log });
+	if (cdp) {
+		log('runtime translator connected');
+		context.subscriptions.push({ dispose: () => cdp.close() });
+		return true;
+	}
+	const mainPid = process.ppid;
+	if (!prompt || context.globalState.get('relaunchPromptPid') === mainPid) {
+		return false;
+	}
+	await context.globalState.update('relaunchPromptPid', mainPid);
+	const now = 'Mở lại ngay';
+	const never = 'Không hỏi lại';
+	const choice = await vscode.window.showInformationMessage(
+		`Để Việt hóa cả giao diện riêng của Cursor (Cursor Settings, Agents, chat), Cursor cần được mở qua ứng dụng “${runtime.LAUNCHER_NAME.replace(/\.app$/, '')}” trong thư mục Applications của bạn. Mở lại Cursor ngay?`,
+		now,
+		never
+	);
+	if (choice === now) {
+		await relaunchFull();
+	} else if (choice === never) {
+		await config().update('runtimeTranslate', false, vscode.ConfigurationTarget.Global);
+	}
+	return false;
 }
 
 function activate(context) {
@@ -99,10 +150,21 @@ function activate(context) {
 		vscode.commands.registerCommand('cursorVietnamese.apply', async () => {
 			try {
 				fs.rmSync(path.join(patcher.stateDir(), 'disabled'), { force: true });
-				if (localize(context)) {
+				if (patcher.bundlePatchingBlocked()) {
+					const restart = localize(context);
+					await config().update('runtimeTranslate', true, vscode.ConfigurationTarget.Global);
+					if (!(await startRuntime(context, { prompt: false }))) {
+						const now = 'Mở lại ngay';
+						if (await vscode.window.showInformationMessage('Cần mở lại Cursor để Việt hóa cả giao diện riêng của Cursor.', now) === now) {
+							await relaunchFull();
+						}
+					} else if (restart) {
+						await promptRestart();
+					} else {
+						vscode.window.showInformationMessage('Giao diện Cursor đã được Việt hóa với bản dịch mới nhất.');
+					}
+				} else if (localize(context)) {
 					await promptRestart();
-				} else if (patcher.bundlePatchingBlocked()) {
-					vscode.window.showInformationMessage('Gói ngôn ngữ tiếng Việt đã cập nhật. Trên macOS, phần chữ viết cứng trong Cursor không thể Việt hóa vì sửa Cursor.app sẽ khiến macOS chặn ứng dụng.');
 				} else {
 					vscode.window.showInformationMessage('Giao diện Cursor đã được Việt hóa với bản dịch mới nhất.');
 				}
@@ -122,6 +184,7 @@ function activate(context) {
 				reportError(err);
 			}
 		}),
+		vscode.commands.registerCommand('cursorVietnamese.relaunch', () => relaunchFull()),
 		vscode.commands.registerCommand('cursorVietnamese.status', () => {
 			const lines = patcher.status({ appRoot: vscode.env.appRoot })
 				.map(s => `${s.file}: ${s.missing ? 'không có' : s.patched ? 'đã Việt hóa' : 'chưa Việt hóa'}`);

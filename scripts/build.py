@@ -119,7 +119,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
         "name": "cursor-vietnamese-language-pack",
         "displayName": "Vietnamese Language Pack for Cursor",
         "description": "Việt hóa toàn bộ Cursor: menu, workbench, Git, Cursor Settings, Agents Window và chat. Tự Việt hóa lại sau mỗi lần Cursor cập nhật.",
-        "version": "0.3.1",
+        "version": "0.4.0",
         "publisher": "duy",
         "license": "MIT",
         "engines": {"vscode": "^1.80.0"},
@@ -136,6 +136,7 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
             "commands": [
                 {"command": "cursorVietnamese.apply", "title": "Việt hóa giao diện Cursor", "category": "Tiếng Việt"},
                 {"command": "cursorVietnamese.restore", "title": "Khôi phục giao diện gốc của Cursor", "category": "Tiếng Việt"},
+                {"command": "cursorVietnamese.relaunch", "title": "Mở lại Cursor ở chế độ Việt hóa đầy đủ", "category": "Tiếng Việt"},
                 {"command": "cursorVietnamese.status", "title": "Xem trạng thái Việt hóa", "category": "Tiếng Việt"},
             ],
             "configuration": {
@@ -150,6 +151,11 @@ def write_package_json(ext_translations: list[dict[str, str]]) -> None:
                         "type": "boolean",
                         "default": True,
                         "description": "Mỗi ngày tải bản dịch mới nhất từ GitHub.",
+                    },
+                    "cursorVietnamese.runtimeTranslate": {
+                        "type": "boolean",
+                        "default": True,
+                        "description": "macOS: Việt hóa giao diện riêng của Cursor ngay khi chạy, không sửa Cursor.app. Cần mở Cursor qua ứng dụng “Cursor Tiếng Việt” (Cursor mở cổng DevTools ngẫu nhiên chỉ trên 127.0.0.1).",
                     },
                 },
             },
